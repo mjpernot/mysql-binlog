@@ -77,7 +77,6 @@ import lib.cmds_gen as cmds_gen
 import mysql_lib.mysql_libs as mysql_libs
 import version
 
-# Version
 __version__ = version.__version__
 
 
@@ -95,7 +94,7 @@ def help_message():
     print(__doc__)
 
 
-def cp_zip_file(args_array, fname):
+def cp_zip_file(args_array, fname, **kwargs):
 
     """Function:  cp_zip_file
 
@@ -113,7 +112,7 @@ def cp_zip_file(args_array, fname):
         gen_libs.compress(os.path.join(args_array["-o"], fname))
 
 
-def flush_log_bkp(args_array, SERVER):
+def flush_log_bkp(args_array, SERVER, **kwargs):
 
     """Function:  flush_log_bkp
 
@@ -135,7 +134,7 @@ def flush_log_bkp(args_array, SERVER):
         sys.exit("Error:  Flush of binary log did not complete.")
 
 
-def fetch_bkp_logs(dir_path):
+def fetch_bkp_logs(dir_path, **kwargs):
 
     """Function:  fetch_bkp_logs
 
@@ -161,7 +160,7 @@ def fetch_bkp_logs(dir_path):
     return fnames
 
 
-def fetch_all_logs(SERVER):
+def fetch_all_logs(SERVER, **kwargs):
 
     """Function:  fetch_all_logs
 
@@ -182,7 +181,7 @@ def fetch_all_logs(SERVER):
     return mysql_logs
 
 
-def fetch_miss_logs(args_array, SERVER):
+def fetch_miss_logs(args_array, SERVER, **kwargs):
 
     """Function:  fetch_miss_logs
 
@@ -206,7 +205,7 @@ def fetch_miss_logs(args_array, SERVER):
     return gen_libs.is_missing_lists(mysql_logs, bkp_logs)
 
 
-def missing_log(args_array, SERVER):
+def missing_log(args_array, SERVER, **kwargs):
 
     """Function:  missing_log
 
@@ -228,7 +227,7 @@ def missing_log(args_array, SERVER):
             print("\t{0}".format(x))
 
 
-def bkp_log_miss(args_array, SERVER):
+def bkp_log_miss(args_array, SERVER, **kwargs):
 
     """Function:  bkp_log_miss
 
@@ -246,7 +245,7 @@ def bkp_log_miss(args_array, SERVER):
         cp_zip_file(args_array, x)
 
 
-def bkp_log_all(args_array, SERVER):
+def bkp_log_all(args_array, SERVER, **kwargs):
 
     """Function:  bkp_log_all
 
@@ -281,7 +280,7 @@ def bkp_log_all(args_array, SERVER):
         cp_zip_file(args_array, x)
 
 
-def purge_log_day(args_array, SERVER):
+def purge_log_day(args_array, SERVER, **kwargs):
 
     """Function:  purge_log_day
 
@@ -302,7 +301,7 @@ def purge_log_day(args_array, SERVER):
     mysql_libs.purge_bin_logs(SERVER, "before", prg_dtg)
 
 
-def purge_log_name(args_array, SERVER):
+def purge_log_name(args_array, SERVER, **kwargs):
 
     """Function:  purge_log_name
 
@@ -326,7 +325,7 @@ def purge_log_name(args_array, SERVER):
         print("Error:  {0} log is not present.".format(args_array["-R"]))
 
 
-def run_program(args_array, func_dict, ord_prec_list):
+def run_program(args_array, func_dict, ord_prec_list, **kwargs):
 
     """Function:  run_program
 
