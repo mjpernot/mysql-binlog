@@ -4,22 +4,24 @@
 """Program:  mysql_binlog.py
 
     Description:  Maintains the MySQL binary log using a number of functions to
-        flush logs, backup logs, and purge logs.
+        flush logs, backup logs, purge logs, and purge logs.
 
     Usage:
-        mysql_binlog.py -c file -d path {-F | -K | [-M | -A] |
-            [-S number | -R file]} [-o path | -l path] [-v | -h]
+        mysql_binlog.py -c file -d path
+            {-F -o path -l path [-z]} | {-K -o path} | {-M -o path -l path} |
+            {-A -o path -l path} | {-S number | -R file]}
+            [-v | -h]
 
     Arguments:
         -c file => Name of configuration file.  Required argument.
         -d dir path => Directory path to config file (-c). Required arg.
         -F => Flush binary logs.  Require:  -o, -l
+        -z => Compress database dump files.
         -K => Print missing backed up binary logs.  Require:  -o
         -M => Backup missing binary logs.  Require:  -o, -l.
         -A => Backup all binary logs.  Require:  -o, -l.
         -S number of days - purge binary logs earlier than N days ago.
         -R file - purge binary logs before binary log file name.
-        -z => Compress database dump files.
         -o dir_path => Log dump directory.  Required by: -F, -K, -M, -A
         -l dir_path => MySQL log directory.  Required by: -F, -M, -A
         -v => Display version of this program.
@@ -30,18 +32,18 @@
             NOTE 3:  -v or -h overrides the other options.
 
     Notes:
-        MySQL configuration file format (mysql_{host}.py):
+        MySQL configuration file format (config/mysql_cfg.py.TEMPLATE):
 
-            # Configuration file for {MySQL Database Server}
+            # Configuration file for MySQL Database:
             user = "root"
-            passwd = "ROOT_PASSWORD"
+            passwd = "PASSWORD"
             host = "IP_ADDRESS"
-            serv_os = "Linux" or "Solaris"
             name = "HOSTNAME"
-            port = PORT_NUMBER (default of mysql is 3306)
-            cfg_file = "DIRECTORY_PATH/my.cnf"
             sid = "SERVER_ID"
             extra_def_file = "DIRECTORY_PATH/myextra.cfg"
+            serv_os = "Linux"
+            port = 3306
+            cfg_file = "DIRECTORY_PATH/my.cnf"
 
         NOTE:  Include the cfg_file even if running remotely as the file will
             be used in future releases.
@@ -49,9 +51,9 @@
         Configuration modules -> Name is runtime dependent as it can be used to
             connect to different databases with different names.
 
-        Defaults Extra File format (filename.cfg):
+        Defaults Extra File format (config/mysql.cfg.TEMPLATE):
             [client]
-            password="ROOT_PASSWORD"
+            password="PASSWORD"
             socket="DIRECTORY_PATH/mysql.sock"
 
         NOTE:  The socket information can be obtained from the my.cnf
