@@ -32,6 +32,7 @@ pipeline {
                 ./test/unit/mysql_binlog/help_message.py
                 ./test/unit/mysql_binlog/missing_log.py
                 ./test/unit/mysql_binlog/purge_log_day.py
+                ./test/unit/mysql_binlog/purge_log_name.py
                 deactivate
                 rm -rf test_env
                 """
