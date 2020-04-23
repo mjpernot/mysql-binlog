@@ -19,6 +19,7 @@ coverage run -a --source=mysql_binlog test/unit/mysql_binlog/help_message.py
 coverage run -a --source=mysql_binlog test/unit/mysql_binlog/missing_log.py
 coverage run -a --source=mysql_binlog test/unit/mysql_binlog/purge_log_day.py
 coverage run -a --source=mysql_binlog test/unit/mysql_binlog/purge_log_name.py
+coverage run -a --source=mysql_binlog test/unit/mysql_binlog/run_program.py
 
 echo ""
 echo "Producing code coverage report"
