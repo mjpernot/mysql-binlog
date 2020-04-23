@@ -14,6 +14,7 @@ coverage run -a --source=mysql_binlog test/unit/mysql_binlog/fetch_bkp_logs.py
 coverage run -a --source=mysql_binlog test/unit/mysql_binlog/fetch_miss_logs.py
 coverage run -a --source=mysql_binlog test/unit/mysql_binlog/flush_log_bkp.py
 coverage run -a --source=mysql_binlog test/unit/mysql_binlog/help_message.py
+coverage run -a --source=mysql_binlog test/unit/mysql_binlog/missing_log.py
 
 echo ""
 echo "Producing code coverage report"

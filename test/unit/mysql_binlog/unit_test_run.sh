@@ -12,3 +12,4 @@ test/unit/mysql_binlog/fetch_bkp_logs.py
 test/unit/mysql_binlog/fetch_miss_logs.py
 test/unit/mysql_binlog/flush_log_bkp.py
 test/unit/mysql_binlog/help_message.py
+test/unit/mysql_binlog/missing_log.py
