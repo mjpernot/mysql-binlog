@@ -364,8 +364,7 @@ def main():
         func_dict -> dictionary list for the function calls or other options.
         opt_con_req_list -> contains the options that require other options.
         xor_noreq_list -> contains options that are XOR, but are not required.
-        ord_prec_array -> contains options in order of precedence to be
-            executed.
+        ord_prec_array -> holds options in order of precedence to be executed.
         opt_req_list -> contains the options that are required for the program.
         opt_val_list -> contains options which require values.
 
