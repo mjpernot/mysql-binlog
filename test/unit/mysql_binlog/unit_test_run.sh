@@ -7,6 +7,7 @@
 echo ""
 echo "Unit testing..."
 test/unit/mysql_binlog/cp_zip_file.py
+test/unit/mysql_binlog/fetch_all_logs.py
 test/unit/mysql_binlog/fetch_bkp_logs.py
 test/unit/mysql_binlog/flush_log_bkp.py
 test/unit/mysql_binlog/help_message.py

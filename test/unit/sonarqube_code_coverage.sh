@@ -9,6 +9,7 @@ coverage erase
 echo ""
 echo "Running unit test modules in conjunction with coverage"
 coverage run -a --source=mysql_binlog test/unit/mysql_binlog/cp_zip_file.py
+coverage run -a --source=mysql_binlog test/unit/mysql_binlog/fetch_all_logs.py
 coverage run -a --source=mysql_binlog test/unit/mysql_binlog/fetch_bkp_logs.py
 coverage run -a --source=mysql_binlog test/unit/mysql_binlog/flush_log_bkp.py
 coverage run -a --source=mysql_binlog test/unit/mysql_binlog/help_message.py
