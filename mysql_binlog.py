@@ -4,7 +4,7 @@
 """Program:  mysql_binlog.py
 
     Description:  Maintains the MySQL binary log using a number of functions to
-        flush logs, backup logs, purge logs, and purge logs.
+        flush logs, backup logs, search for missing logs, and purge logs.
 
     Usage:
         mysql_binlog.py -c file -d path
