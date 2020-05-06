@@ -123,7 +123,7 @@ def flush_log_bkp(args_array, server, **kwargs):
 
     Arguments:
         (input) args_array -> Array of command line options and values.
-        (input) SERVER -> Database server instance.
+        (input) server -> Database server instance.
 
     """
 
@@ -164,7 +164,7 @@ def fetch_bkp_logs(dir_path, **kwargs):
     return fnames
 
 
-def fetch_all_logs(SERVER, **kwargs):
+def fetch_all_logs(server, **kwargs):
 
     """Function:  fetch_all_logs
 
@@ -172,14 +172,14 @@ def fetch_all_logs(SERVER, **kwargs):
         a list of binary log names.
 
     Arguments:
-        (input) SERVER -> Database server instance.
+        (input) server -> Database server instance.
         (output) -> Return a list of binary log file names.
 
     """
 
     mysql_logs = []
 
-    for x in mysql_libs.fetch_logs(SERVER):
+    for x in mysql_libs.fetch_logs(server):
         mysql_logs.append(x["Log_name"])
 
     return mysql_logs
