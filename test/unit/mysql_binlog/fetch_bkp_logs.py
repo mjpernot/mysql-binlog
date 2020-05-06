@@ -43,6 +43,10 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_all_removed -> Rest with all items removed.
+        test_one_list -> Test with one item in list.
+        test_empty_list -> Test with empty list.
+        test_gz_file -> Test with gz in file list.
         test_file_list -> Test with default file list.
 
     """
@@ -60,7 +64,57 @@ class UnitTest(unittest.TestCase):
         self.dir_path = "/dir/path"
         self.file_list = ["File1.txt", "File2.txt"]
         self.file_list2 = ["File1.txt", "File2.txt.gz"]
-        self.results = self.file_list
+        self.file_list3 = ["File1.txt"]
+        self.file_list4 = ["File1.txt.gz", "File2.txt.gz"]
+        self.results = list(self.file_list)
+        self.results2 = list(self.file_list3)
+
+    @mock.patch("mysql_binlog.gen_libs.list_files")
+    def test_all_removed(self, mock_list):
+
+        """Function:  test_all_removed
+
+        Description:  Rest with all items removed.
+
+        Arguments:
+
+        """
+
+        mock_list.return_value = self.file_list4
+
+        self.assertEqual(mysql_binlog.fetch_bkp_logs(self.dir_path),
+                         self.results)
+
+    @mock.patch("mysql_binlog.gen_libs.list_files")
+    def test_one_list(self, mock_list):
+
+        """Function:  test_one_list
+
+        Description:  Test with one item in list.
+
+        Arguments:
+
+        """
+
+        mock_list.return_value = self.file_list3
+
+        self.assertEqual(mysql_binlog.fetch_bkp_logs(self.dir_path),
+                         self.results2)
+
+    @mock.patch("mysql_binlog.gen_libs.list_files")
+    def test_empty_list(self, mock_list):
+
+        """Function:  test_empty_list
+
+        Description:  Test with empty list.
+
+        Arguments:
+
+        """
+
+        mock_list.return_value = []
+
+        self.assertEqual(mysql_binlog.fetch_bkp_logs(self.dir_path), [])
 
     @mock.patch("mysql_binlog.gen_libs.list_files")
     def test_gz_file(self, mock_list):
