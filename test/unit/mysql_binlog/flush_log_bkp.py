@@ -48,17 +48,19 @@ class Server(object):
 
     """
 
-    def __init__(self):
+    def __init__(self, change=True):
 
         """Method:  __init__
 
         Description:  Class initialization.
 
         Arguments:
+            (input) change -> True|False - Change return status.
 
         """
 
-        self.call_return = True
+        self.call_return = change
+        self.log = "Binlog1"
 
     def fetch_log(self):
 
@@ -70,13 +72,12 @@ class Server(object):
 
         """
 
+        data = self.log
+
         if self.call_return:
-            self.call_return = False
+            self.log = "Binlog2"
 
-            return "Binlog1"
-
-        else:
-            return "Binlog2"
+        return data
 
     def flush_logs(self):
 
@@ -99,6 +100,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_flush_fails -> Test with failed flush.
         test_flush_successful -> Test with successful flush.
 
     """
@@ -115,6 +117,21 @@ class UnitTest(unittest.TestCase):
 
         self.args_array = {"-l": True, "-o": "./"}
         self.server = Server()
+        self.server2 = Server(False)
+
+    @mock.patch("mysql_binlog.sys.exit", mock.Mock(return_value=True))
+    def test_flush_fails(self):
+
+        """Function:  test_flush_fails
+
+        Description:  Test with failed flush.
+
+        Arguments:
+
+        """
+
+        self.assertFalse(mysql_binlog.flush_log_bkp(self.args_array,
+                                                    self.server2))
 
     @mock.patch("mysql_binlog.cp_zip_file", mock.Mock(return_value=True))
     def test_flush_successful(self):
