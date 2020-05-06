@@ -295,6 +295,7 @@ def purge_log_day(args_array, SERVER, **kwargs):
 
     """
 
+    args_array = dict(args_array)
     pre_dtg = datetime.datetime.now() - \
         datetime.timedelta(days=int(args_array["-S"]))
     prg_dtg = datetime.datetime.strftime(pre_dtg, "%Y-%m-%d %H:%M:%S")
