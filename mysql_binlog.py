@@ -241,6 +241,7 @@ def bkp_log_miss(args_array, SERVER, **kwargs):
 
     """
 
+    args_array = dict(args_array)
     miss_files = fetch_miss_logs(args_array, SERVER)
 
     for x in miss_files:
