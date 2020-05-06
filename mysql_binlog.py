@@ -126,6 +126,7 @@ def flush_log_bkp(args_array, SERVER, **kwargs):
 
     """
 
+    args_array = dict(args_array)
     cur_log = SERVER.fetch_log()
     SERVER.flush_logs()
 
