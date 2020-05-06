@@ -316,10 +316,11 @@ def purge_log_name(args_array, SERVER, **kwargs):
 
     """
 
+    args_array = dict(args_array)
     mysql_logs = fetch_all_logs(SERVER)
 
-    # Is binary log file name present in database.
     if args_array["-R"] in mysql_logs:
+
         # Purge logs using MySQL 'to' option.
         mysql_libs.purge_bin_logs(SERVER, "to", args_array["-R"])
 
