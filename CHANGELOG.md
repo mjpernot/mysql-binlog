@@ -6,17 +6,18 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [3.0.3] - 2020-04-22
 ### Fixed
-- cp_zip_file:  Changed function parameter mutable argument default to immutable argument default.
-- flush_log_bkp:  Changed function parameter mutable argument default to immutable argument default.
-- fetch_miss_logs:  Changed function parameter mutable argument default to immutable argument default.
-- missing_log:  Changed function parameter mutable argument default to immutable argument default.
-- bkp_log_miss:  Changed function parameter mutable argument default to immutable argument default.
-- bkp_log_all:  Changed function parameter mutable argument default to immutable argument default.
-- purge_log_day:  Changed function parameter mutable argument default to immutable argument default.
-- purge_log_name:  Changed function parameter mutable argument default to immutable argument default.
-- run_program:  Changed function parameter mutable argument default to immutable argument default.
+- cp_zip_file:  Fixed problem with mutable default arguments issue.
+- flush_log_bkp:  Fixed problem with mutable default arguments issue.
+- fetch_miss_logs:  Fixed problem with mutable default arguments issue.
+- missing_log:  Fixed problem with mutable default arguments issue.
+- bkp_log_miss:  Fixed problem with mutable default arguments issue.
+- bkp_log_all:  Fixed problem with mutable default arguments issue.
+- purge_log_day:  Fixed problem with mutable default arguments issue.
+- purge_log_name:  Fixed problem with mutable default arguments issue.
+- run_program:  Fixed problem with mutable default arguments issue.
 
 ### Changed
+- flush_log_bkp:  Changed variable name to standard naming convention.
 - Added \*\*kwargs to argument list to all functions.
 - Documentation updates.
 

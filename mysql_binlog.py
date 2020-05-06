@@ -115,7 +115,7 @@ def cp_zip_file(args_array, fname, **kwargs):
         gen_libs.compress(os.path.join(args_array["-o"], fname))
 
 
-def flush_log_bkp(args_array, SERVER, **kwargs):
+def flush_log_bkp(args_array, server, **kwargs):
 
     """Function:  flush_log_bkp
 
@@ -128,10 +128,10 @@ def flush_log_bkp(args_array, SERVER, **kwargs):
     """
 
     args_array = dict(args_array)
-    cur_log = SERVER.fetch_log()
-    SERVER.flush_logs()
+    cur_log = server.fetch_log()
+    server.flush_logs()
 
-    if cur_log != SERVER.fetch_log():
+    if cur_log != server.fetch_log():
         cp_zip_file(args_array, cur_log)
 
     else:
