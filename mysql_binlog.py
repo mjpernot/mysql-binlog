@@ -351,16 +351,16 @@ def run_program(args_array, func_dict, ord_prec_list, **kwargs):
     args_array = dict(args_array)
     func_dict = dict(func_dict)
     ord_prec_list = list(ord_prec_list)
-    SERVER = mysql_libs.crt_srv_inst(args_array["-c"], args_array["-d"])
-    SERVER.connect()
+    server = mysql_libs.crt_srv_inst(args_array["-c"], args_array["-d"])
+    server.connect()
 
     # Execute functions based on order of precedence.
     for x in ord_prec_list:
 
         if x in args_array:
-            func_dict[x](args_array, SERVER)
+            func_dict[x](args_array, server)
 
-    cmds_gen.disconnect([SERVER])
+    cmds_gen.disconnect([server])
 
 
 def main():
