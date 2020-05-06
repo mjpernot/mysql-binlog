@@ -17,6 +17,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - run_program:  Fixed problem with mutable default arguments issue.
 
 ### Changed
+- fetch_miss_logs:  Changed variable name to standard naming convention.
 - fetch_all_logs:  Changed variable name to standard naming convention.
 - flush_log_bkp:  Changed variable name to standard naming convention.
 - Added \*\*kwargs to argument list to all functions.

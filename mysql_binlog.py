@@ -185,7 +185,7 @@ def fetch_all_logs(server, **kwargs):
     return mysql_logs
 
 
-def fetch_miss_logs(args_array, SERVER, **kwargs):
+def fetch_miss_logs(args_array, server, **kwargs):
 
     """Function:  fetch_miss_logs
 
@@ -194,15 +194,15 @@ def fetch_miss_logs(args_array, SERVER, **kwargs):
 
     Arguments:
         (input) args_array -> Array of command line options and values.
-        (input) SERVER -> Database server instance.
+        (input) server -> Database server instance.
 
     """
 
     args_array = dict(args_array)
-    mysql_logs = fetch_all_logs(SERVER)
+    mysql_logs = fetch_all_logs(server)
 
     # Remove current binary log from list.
-    mysql_logs.remove(SERVER.fetch_log())
+    mysql_logs.remove(server.fetch_log())
 
     bkp_logs = fetch_bkp_logs(args_array["-o"])
 
