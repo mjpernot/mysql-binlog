@@ -108,6 +108,7 @@ def cp_zip_file(args_array, fname, **kwargs):
 
     """
 
+    args_array = dict(args_array)
     gen_libs.cp_file2(fname, args_array["-l"], args_array["-o"])
 
     if "-z" in args_array:
