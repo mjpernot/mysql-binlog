@@ -65,25 +65,25 @@ pipeline {
                                 "pattern": "./*.py",
                                 "recursive": false,
                                 "excludePatterns": [],
-                                "target": "pypi-generic-local/highpoint/mysql-binlog/"
+                                "target": "pypi-proj-local/highpoint/mysql-binlog/"
                             },
                             {
                                 "pattern": "./*.txt",
                                 "recursive": false,
                                 "excludePatterns": [],
-                                "target": "pypi-generic-local/highpoint/mysql-binlog/"
+                                "target": "pypi-proj-local/highpoint/mysql-binlog/"
                             },
                             {
                                 "pattern": "./*.md",
                                 "recursive": false,
                                 "excludePatterns": [],
-                                "target": "pypi-generic-local/highpoint/mysql-binlog/"
+                                "target": "pypi-proj-local/highpoint/mysql-binlog/"
                             },
                             {
                                 "pattern": "*.TEMPLATE",
                                 "recursive": true,
                                 "excludePatterns": [],
-                                "target": "pypi-generic-local/highpoint/mysql-binlog/config/"
+                                "target": "pypi-proj-local/highpoint/mysql-binlog/config/"
                             }
                         ]
                     }"""
