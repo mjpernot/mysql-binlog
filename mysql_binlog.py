@@ -310,7 +310,7 @@ def purge_log_day(args_array, server, **kwargs):
     mysql_libs.purge_bin_logs(server, "before", prg_dtg)
 
 
-def purge_log_name(args_array, SERVER, **kwargs):
+def purge_log_name(args_array, server, **kwargs):
 
     """Function:  purge_log_name
 
@@ -319,17 +319,17 @@ def purge_log_name(args_array, SERVER, **kwargs):
 
     Arguments:
         (input) args_array -> Array of command line options and values.
-        (input) SERVER -> Database server instance.
+        (input) server -> Database server instance.
 
     """
 
     args_array = dict(args_array)
-    mysql_logs = fetch_all_logs(SERVER)
+    mysql_logs = fetch_all_logs(server)
 
     if args_array["-R"] in mysql_logs:
 
         # Purge logs using MySQL 'to' option.
-        mysql_libs.purge_bin_logs(SERVER, "to", args_array["-R"])
+        mysql_libs.purge_bin_logs(server, "to", args_array["-R"])
 
     else:
         print("Error:  {0} log is not present.".format(args_array["-R"]))
