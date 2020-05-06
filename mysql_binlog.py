@@ -220,6 +220,7 @@ def missing_log(args_array, SERVER, **kwargs):
 
     """
 
+    args_array = dict(args_array)
     miss_files = fetch_miss_logs(args_array, SERVER)
 
     if miss_files:
