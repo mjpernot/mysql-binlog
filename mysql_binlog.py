@@ -8,20 +8,24 @@
 
     Usage:
         mysql_binlog.py -c file -d path
-            {-F -o path -l path [-z]} | {-K -o path} | {-M -o path -l path} |
-            {-A -o path -l path} | {-S number | -R file]}
+            {-F -o path -l path [-z]} |
+            {-K -o path} |
+            {-M -o path -l path} |
+            {-A -o path -l path} |
+            {-S number | -R file]}
             [-v | -h]
 
     Arguments:
         -c file => Name of configuration file.  Required argument.
         -d dir path => Directory path to config file (-c). Required arg.
-        -F => Flush binary logs.  Require:  -o, -l
-        -z => Compress database dump files.
+        -F => Flush and backup current binary log.  Require:  -o, -l
         -K => Print missing backed up binary logs.  Require:  -o
         -M => Backup missing binary logs.  Require:  -o, -l.
         -A => Backup all binary logs.  Require:  -o, -l.
         -S number of days - purge binary logs earlier than N days ago.
         -R file - purge binary logs before binary log file name.
+        -z => Compress binary log file.
+            Only applicable to -F option.
         -o dir_path => Log dump directory.  Required by: -F, -K, -M, -A
         -l dir_path => MySQL log directory.  Required by: -F, -M, -A
         -v => Display version of this program.
