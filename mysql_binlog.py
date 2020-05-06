@@ -210,7 +210,7 @@ def fetch_miss_logs(args_array, server, **kwargs):
     return gen_libs.is_missing_lists(mysql_logs, bkp_logs)
 
 
-def missing_log(args_array, SERVER, **kwargs):
+def missing_log(args_array, server, **kwargs):
 
     """Function:  missing_log
 
@@ -219,12 +219,12 @@ def missing_log(args_array, SERVER, **kwargs):
 
     Arguments:
         (input) args_array -> Array of command line options and values.
-        (input) SERVER -> Database server instance.
+        (input) server -> Database server instance.
 
     """
 
     args_array = dict(args_array)
-    miss_files = fetch_miss_logs(args_array, SERVER)
+    miss_files = fetch_miss_logs(args_array, server)
 
     if miss_files:
         print("Missing files:")
