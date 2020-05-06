@@ -10,8 +10,8 @@
         mysql_binlog.py -c file -d path
             {-F -o path -l path [-z]} |
             {-K -o path} |
-            {-M -o path -l path} |
-            {-A -o path -l path} |
+            {-M -o path -l path [-z]} |
+            {-A -o path -l path [-z]} |
             {-S number | -R file]}
             [-v | -h]
 
@@ -24,8 +24,7 @@
         -A => Backup all binary logs.  Require:  -o, -l.
         -S number of days - purge binary logs earlier than N days ago.
         -R file - purge binary logs before binary log file name.
-        -z => Compress binary log file.
-            Only applicable to -F option.
+        -z => Compress binary log file during backup process.
         -o dir_path => Log dump directory.  Required by: -F, -K, -M, -A
         -l dir_path => MySQL log directory.  Required by: -F, -M, -A
         -v => Display version of this program.
