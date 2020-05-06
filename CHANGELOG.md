@@ -5,6 +5,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 
 ## [3.0.3] - 2020-04-22
+### Fixed
+- run_program:  Changed function parameter mutable argument default to immutable argument default.
+
 ### Changed
 - Added \*\*kwargs to argument list to all functions.
 - Documentation updates.
