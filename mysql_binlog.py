@@ -288,7 +288,7 @@ def bkp_log_all(args_array, server, **kwargs):
         cp_zip_file(args_array, x)
 
 
-def purge_log_day(args_array, SERVER, **kwargs):
+def purge_log_day(args_array, server, **kwargs):
 
     """Function:  purge_log_day
 
@@ -297,7 +297,7 @@ def purge_log_day(args_array, SERVER, **kwargs):
 
     Arguments:
         (input) args_array -> Array of command line options and values.
-        (input) SERVER -> Database server instance.
+        (input) server -> Database server instance.
 
     """
 
@@ -307,7 +307,7 @@ def purge_log_day(args_array, SERVER, **kwargs):
     prg_dtg = datetime.datetime.strftime(pre_dtg, "%Y-%m-%d %H:%M:%S")
 
     # Purge logs using MySQL 'before' option.
-    mysql_libs.purge_bin_logs(SERVER, "before", prg_dtg)
+    mysql_libs.purge_bin_logs(server, "before", prg_dtg)
 
 
 def purge_log_name(args_array, SERVER, **kwargs):
