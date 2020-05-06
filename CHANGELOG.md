@@ -6,6 +6,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [3.0.3] - 2020-04-22
 ### Fixed
+- purge_log_name:  Changed function parameter mutable argument default to immutable argument default.
 - run_program:  Changed function parameter mutable argument default to immutable argument default.
 
 ### Changed
