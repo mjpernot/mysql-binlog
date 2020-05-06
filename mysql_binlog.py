@@ -196,6 +196,7 @@ def fetch_miss_logs(args_array, SERVER, **kwargs):
 
     """
 
+    args_array = dict(args_array)
     mysql_logs = fetch_all_logs(SERVER)
 
     # Remove current binary log from list.

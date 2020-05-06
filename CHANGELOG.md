@@ -6,6 +6,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [3.0.3] - 2020-04-22
 ### Fixed
+- fetch_miss_logs:  Changed function parameter mutable argument default to immutable argument default.
 - missing_log:  Changed function parameter mutable argument default to immutable argument default.
 - bkp_log_miss:  Changed function parameter mutable argument default to immutable argument default.
 - bkp_log_all:  Changed function parameter mutable argument default to immutable argument default.
