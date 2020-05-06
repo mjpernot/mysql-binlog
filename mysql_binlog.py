@@ -260,6 +260,7 @@ def bkp_log_all(args_array, SERVER, **kwargs):
 
     """
 
+    args_array = dict(args_array)
     mysql_logs = fetch_all_logs(SERVER)
 
     # Remove current binary log file from list.
