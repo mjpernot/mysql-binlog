@@ -67,6 +67,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_single_item -> Test with single item in list.
         test_empty_list -> Test with no logs.
         test_log_return -> Test with successful log return.
 
@@ -82,10 +83,28 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.log_dict = ({"Log1": True, "Log_name": "BinLog1"},
-                         {"Log2": True, "Log_name": "BinLog2"})
+        self.log_dict = [{"Log1": True, "Log_name": "BinLog1"},
+                         {"Log2": True, "Log_name": "BinLog2"}]
+        self.log_dict2 = [{"Log1": True, "Log_name": "BinLog1"}]
         self.server = Server()
         self.results = ["BinLog1", "BinLog2"]
+        self.results2 = ["BinLog1"]
+
+    @mock.patch("mysql_binlog.mysql_libs.fetch_logs")
+    def test_single_item(self, mock_fetch):
+
+        """Function:  test_single_item
+
+        Description:  Test with single item in list.
+
+        Arguments:
+
+        """
+
+        mock_fetch.return_value = self.log_dict2
+
+        self.assertEqual(mysql_binlog.fetch_all_logs(self.server),
+                         self.results2)
 
     @mock.patch("mysql_binlog.mysql_libs.fetch_logs")
     def test_empty_list(self, mock_fetch):
