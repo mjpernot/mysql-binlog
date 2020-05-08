@@ -17,6 +17,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - run_program:  Fixed problem with mutable default arguments issue.
 
 ### Changed
+- run_program:  Replaced crt_srv_inst call with create_instance call.
 - main:  Refactored "if" statements in function.
 - run_program:  Changed variable name to standard naming convention.
 - purge_log_name:  Changed variable name to standard naming convention.

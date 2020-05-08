@@ -80,6 +80,7 @@ import lib.arg_parser as arg_parser
 import lib.gen_libs as gen_libs
 import lib.cmds_gen as cmds_gen
 import mysql_lib.mysql_libs as mysql_libs
+import mysql_lib.mysql_class as mysql_class
 import version
 
 __version__ = version.__version__
@@ -354,7 +355,9 @@ def run_program(args_array, func_dict, ord_prec_list, **kwargs):
     args_array = dict(args_array)
     func_dict = dict(func_dict)
     ord_prec_list = list(ord_prec_list)
-    server = mysql_libs.crt_srv_inst(args_array["-c"], args_array["-d"])
+    #server = mysql_libs.crt_srv_inst(args_array["-c"], args_array["-d"])
+    server = mysql_libs.create_instance(args_array["-c"], args_array["-d"],
+                                        mysql_class.Server)
     server.connect()
 
     # Execute functions based on order of precedence.
