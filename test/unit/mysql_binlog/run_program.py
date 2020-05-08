@@ -196,7 +196,7 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("mysql_binlog.cmds_gen.disconnect",
                 mock.Mock(return_value=True))
-    @mock.patch("mysql_binlog.mysql_libs.crt_srv_inst")
+    @mock.patch("mysql_binlog.mysql_libs.create_instance")
     def test_two_functions(self, mock_inst):
 
         """Function:  test_two_functions
@@ -214,7 +214,7 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("mysql_binlog.cmds_gen.disconnect",
                 mock.Mock(return_value=True))
-    @mock.patch("mysql_binlog.mysql_libs.crt_srv_inst")
+    @mock.patch("mysql_binlog.mysql_libs.create_instance")
     def test_one_function(self, mock_inst):
 
         """Function:  test_one_function
