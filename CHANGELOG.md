@@ -34,6 +34,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - fetch_all_logs:  Changed variable name to standard naming convention.
 - flush_log_bkp:  Changed variable name to standard naming convention.
 - Added \*\*kwargs to argument list to all functions.
+- config/mysql_cfg.py.TEMPLATE:  Change to generic template.
 - Documentation updates.
 
 

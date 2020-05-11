@@ -40,7 +40,8 @@
         MySQL configuration file format (config/mysql_cfg.py.TEMPLATE):
 
             # Configuration file for MySQL Database:
-            user = "root"
+            # User is normally root.
+            user = "USER"
             passwd = "PASSWORD"
             host = "IP_ADDRESS"
             name = "HOSTNAME"
