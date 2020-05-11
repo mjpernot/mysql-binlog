@@ -1,7 +1,8 @@
 # MySQL Configuration file
 # Classification (U)
 # Unclassified until filled in.
-user = 'root'
+# User is normally root.
+user = 'USER'
 passwd = 'PASSWORD'
 # MySQL DB host information
 host = 'SERVER_IP'
