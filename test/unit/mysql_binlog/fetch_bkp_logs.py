@@ -62,9 +62,10 @@ class UnitTest(unittest.TestCase):
         """
 
         self.dir_path = "/dir/path"
-        self.file_list = ["File1.txt", "File2.txt"]
-        self.file_list2 = ["File1.txt", "File2.txt.gz"]
-        self.file_list3 = ["File1.txt"]
+        self.fname = "File1.txt"
+        self.file_list = [self.fname, "File2.txt"]
+        self.file_list2 = [self.fname, "File2.txt.gz"]
+        self.file_list3 = [self.fname]
         self.file_list4 = ["File1.txt.gz", "File2.txt.gz"]
         self.results = list(self.file_list)
         self.results2 = list(self.file_list3)
