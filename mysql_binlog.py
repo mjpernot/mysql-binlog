@@ -12,7 +12,8 @@
             {-K -o path} |
             {-M -o path -l path [-z]} |
             {-A -o path -l path [-z]} |
-            {-S number | -R file]}
+            {-S number | -R file]} |
+            [-y flavor_id]
             [-v | -h]
 
     Arguments:
@@ -27,6 +28,7 @@
         -z => Compress binary log file during backup process.
         -o dir_path => Log dump directory.  Required by: -F, -K, -M, -A
         -l dir_path => MySQL log directory.  Required by: -F, -M, -A
+        -y value => A flavor id for the program lock.  To create unique lock.
         -v => Display version of this program.
         -h => Help and usage message.
 
