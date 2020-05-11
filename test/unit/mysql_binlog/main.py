@@ -35,15 +35,38 @@ import version
 __version__ = version.__version__
 
 
+class ProgramLock(object):
+
+    """Class:  ProgramLock
+
+    Description:  Class stub holder for gen_class.ProgramLock class.
+
+    Methods:
+        __init__ -> Class initialization.
+
+    """
+
+    def __init__(self, cmdline, flavor):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+            (input) cmdline -> Argv command line.
+            (input) flavor -> Lock flavor ID.
+
+        """
+
+        self.cmdline = cmdline
+        self.flavor = flavor
+
+
 class UnitTest(unittest.TestCase):
 
     """Class:  UnitTest
 
     Description:  Class which is a representation of a unit testing.
-
-    Super-Class:  unittest.TestCase
-
-    Sub-Classes:
 
     Methods:
         setUp -> Initialize testing environment.
@@ -57,6 +80,9 @@ class UnitTest(unittest.TestCase):
         test_arg_cond_req_true -> Test arg_cond_req if returns true.
         test_arg_dir_chk_crt_true -> Test arg_dir_chk_crt if returns true.
         test_arg_dir_chk_crt_false -> Test arg_dir_chk_crt if returns false.
+        test_run_program -> Test run_program function.
+        test_programlock_id -> Test ProgramLock with flavor ID.
+        test_programlock_fail -> Test ProgramLock fails to lock.
 
     """
 
@@ -94,6 +120,7 @@ class UnitTest(unittest.TestCase):
 
         self.cmd_line = CmdLine()
         self.args_array = {"-c": "CfgFile", "-d": "CfgDir"}
+        self.proglock = ProgramLock(["cmdline"], "FlavorID")
 
     @mock.patch("mysql_binlog.gen_libs.get_inst")
     @mock.patch("mysql_binlog.gen_libs.help_func")
@@ -291,12 +318,13 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(mysql_binlog.main())
 
+    @mock.patch("mysql_binlog.gen_class.ProgramLock")
     @mock.patch("mysql_binlog.gen_libs.get_inst")
     @mock.patch("mysql_binlog.run_program")
     @mock.patch("mysql_binlog.gen_libs.help_func")
     @mock.patch("mysql_binlog.arg_parser")
     def test_arg_dir_chk_crt_false(self, mock_arg, mock_help, mock_run,
-                                   mock_inst):
+                                   mock_inst, mock_lock):
 
         """Function:  test_arg_dir_chk_crt_false
 
@@ -314,6 +342,91 @@ class UnitTest(unittest.TestCase):
         mock_arg.arg_dir_chk_crt.return_value = False
         mock_run.return_value = True
         mock_inst.return_value = self.cmd_line
+        mock_lock.return_value = self.proglock
+
+        self.assertFalse(mysql_binlog.main())
+
+    @mock.patch("mysql_binlog.gen_class.ProgramLock")
+    @mock.patch("mysql_binlog.gen_libs.get_inst")
+    @mock.patch("mysql_binlog.run_program")
+    @mock.patch("mysql_binlog.gen_libs.help_func")
+    @mock.patch("mysql_binlog.arg_parser")
+    def test_run_program(self, mock_arg, mock_help, mock_run, mock_inst,
+                         mock_lock):
+
+        """Function:  test_run_program
+
+        Description:  Test run_program function.
+
+        Arguments:
+
+        """
+
+        mock_arg.arg_parse2.return_value = self.args_array
+        mock_help.return_value = False
+        mock_arg.arg_require.return_value = False
+        mock_arg.arg_noreq_xor.return_value = True
+        mock_arg.arg_cond_req.return_value = True
+        mock_arg.arg_dir_chk_crt.return_value = False
+        mock_run.return_value = True
+        mock_inst.return_value = self.cmd_line
+        mock_lock.return_value = self.proglock
+
+        self.assertFalse(mysql_binlog.main())
+
+    @mock.patch("mysql_binlog.gen_class.ProgramLock")
+    @mock.patch("mysql_binlog.gen_libs.get_inst")
+    @mock.patch("mysql_binlog.run_program")
+    @mock.patch("mysql_binlog.gen_libs.help_func")
+    @mock.patch("mysql_binlog.arg_parser")
+    def test_programlock_id(self, mock_arg, mock_help, mock_run, mock_inst,
+                            mock_lock):
+
+        """Function:  test_programlock_id
+
+        Description:  Test run_program function.
+
+        Arguments:
+
+        """
+
+        mock_arg.arg_parse2.return_value = self.args_array
+        mock_help.return_value = False
+        mock_arg.arg_require.return_value = False
+        mock_arg.arg_noreq_xor.return_value = True
+        mock_arg.arg_cond_req.return_value = True
+        mock_arg.arg_dir_chk_crt.return_value = False
+        mock_run.return_value = True
+        mock_inst.return_value = self.cmd_line
+        mock_lock.return_value = self.proglock
+
+        self.assertFalse(mysql_binlog.main())
+
+    @mock.patch("mysql_binlog.gen_class.ProgramLock")
+    @mock.patch("mysql_binlog.gen_libs.get_inst")
+    @mock.patch("mysql_binlog.run_program")
+    @mock.patch("mysql_binlog.gen_libs.help_func")
+    @mock.patch("mysql_binlog.arg_parser")
+    def test_programlock_fail(self, mock_arg, mock_help, mock_run, mock_inst,
+                              mock_lock):
+
+        """Function:  test_programlock_fail
+
+        Description:  Test ProgramLock fails to lock.
+
+        Arguments:
+
+        """
+
+        mock_arg.arg_parse2.return_value = self.args_array
+        mock_help.return_value = False
+        mock_arg.arg_require.return_value = False
+        mock_arg.arg_noreq_xor.return_value = True
+        mock_arg.arg_cond_req.return_value = True
+        mock_arg.arg_dir_chk_crt.return_value = False
+        mock_run.return_value = True
+        mock_inst.return_value = self.cmd_line
+        mock_lock.return_value = mysql_binlog.gen_class.SingleInstanceException
 
         self.assertFalse(mysql_binlog.main())
 
