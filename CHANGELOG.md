@@ -6,6 +6,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [3.0.3] - 2020-04-22
 ### Fixed
+- main:  Fixed handling command line arguments from SonarQube scan finding.
 - cp_zip_file:  Fixed problem with mutable default arguments issue.
 - flush_log_bkp:  Fixed problem with mutable default arguments issue.
 - fetch_miss_logs:  Fixed problem with mutable default arguments issue.

@@ -389,6 +389,7 @@ def main():
 
     """
 
+    cmdline = gen_libs.get_inst(sys)
     dir_chk_list = ["-d", "-l", "-o"]
     func_dict = {"-F": flush_log_bkp, "-K": missing_log, "-M": bkp_log_miss,
                  "-A": bkp_log_all, "-S": purge_log_day, "-R": purge_log_name}
