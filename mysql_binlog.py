@@ -80,6 +80,7 @@ import datetime
 # Local
 import lib.arg_parser as arg_parser
 import lib.gen_libs as gen_libs
+import lib.gen_class as gen_class
 import lib.cmds_gen as cmds_gen
 import mysql_lib.mysql_libs as mysql_libs
 import mysql_lib.mysql_class as mysql_class
@@ -400,7 +401,7 @@ def main():
     xor_noreq_list = {"-S": "-R", "-M": "-A"}
     ord_prec_list = ["-F", "-K", "-M", "-A", "-S", "-R"]
     opt_req_list = ["-c", "-d"]
-    opt_val_list = ["-c", "-d", "-l", "-o", "-R", "-S"]
+    opt_val_list = ["-c", "-d", "-l", "-o", "-R", "-S", "-y"]
 
     # Process argument list from command line.
     args_array = arg_parser.arg_parse2(cmdline.argv, opt_val_list)
@@ -410,7 +411,16 @@ def main():
        and arg_parser.arg_noreq_xor(args_array, xor_noreq_list) \
        and arg_parser.arg_cond_req(args_array, opt_con_req_list) \
        and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list):
-        run_program(args_array, func_dict, ord_prec_list)
+
+        try:
+            prog_lock = gen_class.ProgramLock(cmdline.argv,
+                                              args_array.get("-y", ""))
+            run_program(args_array, func_dict, ord_prec_list)
+            del prog_lock
+
+        except gen_class.SingleInstanceException:
+            print("WARNING:  lock in place for mysql_binlog with id of: %s"
+                  % (args_array.get("-y", "")))
 
 
 if __name__ == "__main__":
