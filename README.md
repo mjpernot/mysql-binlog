@@ -77,7 +77,8 @@ cp mysql_cfg.py.TEMPLATE mysql_cfg.py
 
 Make the appropriate change to the environment.
   * Change these entries in the MySQL setup:
-    - passwd = "ROOT_PASSWORD"
+    - user = "USER"
+    - passwd = "PASSWORD"
     - host = "SERVER_IP"
     - name = "HOST_NAME"
     - sid = SERVER_ID
@@ -95,7 +96,7 @@ cp mysql.cfg.TEMPLATE mysql.cfg
 ```
 Make the appropriate change to the environment.
   * Change these entries in the MySQL definition file:
-    - password="ROOT_PASSWORD"
+    - password="PASSWORD"
     - socket={BASE_DIR}/mysql/tmp/mysql.sock
 
 ```
