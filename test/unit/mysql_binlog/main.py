@@ -426,9 +426,10 @@ class UnitTest(unittest.TestCase):
         mock_arg.arg_dir_chk_crt.return_value = False
         mock_run.return_value = True
         mock_inst.return_value = self.cmd_line
-        mock_lock.return_value = mysql_binlog.gen_class.SingleInstanceException
+        mock_lock.side_effect = mysql_binlog.gen_class.SingleInstanceException
 
-        self.assertFalse(mysql_binlog.main())
+        with gen_libs.no_std_out():
+            self.assertFalse(mysql_binlog.main())
 
 
 if __name__ == "__main__":
