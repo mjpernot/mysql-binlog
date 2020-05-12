@@ -143,7 +143,7 @@ def flush_log_bkp(args_array, server, **kwargs):
         cp_zip_file(args_array, cur_log)
 
     else:
-        sys.exit("Error:  Flush of binary log did not complete.")
+        print("Warning: Flush of binary log: %s did not complete." % (cur_log))
 
 
 def fetch_bkp_logs(dir_path, **kwargs):
