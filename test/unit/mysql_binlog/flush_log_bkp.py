@@ -119,7 +119,6 @@ class UnitTest(unittest.TestCase):
         self.server = Server()
         self.server2 = Server(False)
 
-    @mock.patch("mysql_binlog.sys.exit", mock.Mock(return_value=True))
     def test_flush_fails(self):
 
         """Function:  test_flush_fails
@@ -130,8 +129,9 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(mysql_binlog.flush_log_bkp(self.args_array,
-                                                    self.server2))
+        with gen_libs.no_std_out():
+            self.assertFalse(mysql_binlog.flush_log_bkp(self.args_array,
+                                                        self.server2))
 
     @mock.patch("mysql_binlog.cp_zip_file", mock.Mock(return_value=True))
     def test_flush_successful(self):
