@@ -282,18 +282,18 @@ def bkp_log_all(args_array, server, **kwargs):
     # Get file names in backup directory.
     bkp_logs = fetch_bkp_logs(args_array["-o"])
 
-    for x in mysql_logs:
+    for item in mysql_logs:
 
-        if x in bkp_logs:
-            fname = x
+        if item in bkp_logs:
+            fname = item
 
-            if not os.path.isfile(os.path.join(args_array["-o"], x)):
-                fname = x + ".gz"
+            if not os.path.isfile(os.path.join(args_array["-o"], item)):
+                fname = item + ".gz"
 
             ext = time.strftime("%Y%m%d_%I%M")
             gen_libs.rename_file(fname, fname + "." + ext, args_array["-o"])
 
-        cp_zip_file(args_array, x)
+        cp_zip_file(args_array, item)
 
 
 def purge_log_day(args_array, server, **kwargs):
