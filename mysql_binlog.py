@@ -364,10 +364,10 @@ def run_program(args_array, func_dict, ord_prec_list, **kwargs):
     server.connect()
 
     # Execute functions based on order of precedence.
-    for x in ord_prec_list:
+    for item in ord_prec_list:
 
-        if x in args_array:
-            func_dict[x](args_array, server)
+        if item in args_array:
+            func_dict[item](args_array, server)
 
     cmds_gen.disconnect([server])
 

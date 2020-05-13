@@ -21,11 +21,6 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - run_program:  Fixed problem with mutable default arguments issue.
 
 ### Changed
-- bkp_log_all:  Changed variable name to standard naming convetion.
-- bkp_log_miss:  Changed variable name to standard naming convetion.
-- missing_log:  Changed variable name to standard naming convetion.
-- fetch_all_logs:  Changed variable name to standard naming convetion.
-- fetch_bkp_logs:  Changed variable name to standard naming convetion.
 - flush_log_bkp:  Replaced sys.exit() with print() and changed message to Warning message.
 - main:  Added program lock functionality to program.
 - run_program:  Replaced crt_srv_inst call with create_instance call.
