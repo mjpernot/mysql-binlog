@@ -161,12 +161,12 @@ def fetch_bkp_logs(dir_path, **kwargs):
 
     fnames = gen_libs.list_files(dir_path)
 
-    for y in fnames[:]:
-        root, ext = os.path.splitext(y)
+    for item in fnames[:]:
+        root, ext = os.path.splitext(item)
 
         if ext == ".gz":
             # Remove compressed name and append root name.
-            fnames.remove(y)
+            fnames.remove(item)
             fnames.append(root)
 
     return fnames
