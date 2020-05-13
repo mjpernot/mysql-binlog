@@ -117,7 +117,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(mysql_binlog.bkp_log_miss(self.args_array,
-                                                      self.server))
+                                                       self.server))
 
     @mock.patch("mysql_binlog.cp_zip_file", mock.Mock(return_value=True))
     @mock.patch("mysql_binlog.fetch_miss_logs")
@@ -135,7 +135,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(mysql_binlog.bkp_log_miss(self.args_array,
-                                                      self.server))
+                                                       self.server))
 
     @mock.patch("mysql_binlog.cp_zip_file", mock.Mock(return_value=True))
     @mock.patch("mysql_binlog.fetch_miss_logs")
@@ -152,7 +152,7 @@ class UnitTest(unittest.TestCase):
         mock_fetch.return_value = self.miss_logs3
 
         self.assertFalse(mysql_binlog.bkp_log_miss(self.args_array,
-                                                  self.server))
+                                                   self.server))
 
 
 if __name__ == "__main__":
