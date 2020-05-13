@@ -237,8 +237,8 @@ def missing_log(args_array, server, **kwargs):
     if miss_files:
         print("Missing files:")
 
-        for x in miss_files:
-            print("\t{0}".format(x))
+        for item in miss_files:
+            print("\t{0}".format(item))
 
 
 def bkp_log_miss(args_array, server, **kwargs):
