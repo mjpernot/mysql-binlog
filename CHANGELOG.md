@@ -21,6 +21,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - run_program:  Fixed problem with mutable default arguments issue.
 
 ### Changed
+- bkp_log_miss:  Changed variable name to standard naming convetion.
 - missing_log:  Changed variable name to standard naming convetion.
 - fetch_all_logs:  Changed variable name to standard naming convetion.
 - fetch_bkp_logs:  Changed variable name to standard naming convetion.

@@ -256,8 +256,8 @@ def bkp_log_miss(args_array, server, **kwargs):
     args_array = dict(args_array)
     miss_files = fetch_miss_logs(args_array, server)
 
-    for x in miss_files:
-        cp_zip_file(args_array, x)
+    for item in miss_files:
+        cp_zip_file(args_array, item)
 
 
 def bkp_log_all(args_array, server, **kwargs):
