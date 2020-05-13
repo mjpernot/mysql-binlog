@@ -187,8 +187,8 @@ def fetch_all_logs(server, **kwargs):
 
     mysql_logs = []
 
-    for x in mysql_libs.fetch_logs(server):
-        mysql_logs.append(x["Log_name"])
+    for item in mysql_libs.fetch_logs(server):
+        mysql_logs.append(item["Log_name"])
 
     return mysql_logs
 
