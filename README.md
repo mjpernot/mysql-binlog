@@ -66,7 +66,7 @@ pip install -r requirements-python-lib.txt --target mysql_lib/lib --trusted-host
 ```
 
 # Configuration:
-  * Replace **{Python_Project}** with the baseline path of the python program.
+  * Replace **PYTHON_PROJECT** with the baseline path of the python program.
 
 Create MySQL configuration file.
 
@@ -82,7 +82,12 @@ Make the appropriate change to the environment.
     - host = "SERVER_IP"
     - name = "HOST_NAME"
     - sid = SERVER_ID
-    - extra_def_file = "{Python_Project}/config/mysql.cfg"
+    - extra_def_file = "PYTHON_PROJECT/config/mysql.cfg"
+    - cfg_file = "DIRECTORY_PATH/my.cnf"
+
+  * Change these entries only if required:
+    - serv_os = "Linux"
+    - port = 3306
 
 ```
 vim mysql_cfg.py
@@ -97,7 +102,7 @@ cp mysql.cfg.TEMPLATE mysql.cfg
 Make the appropriate change to the environment.
   * Change these entries in the MySQL definition file:
     - password="PASSWORD"
-    - socket={BASE_DIR}/mysql/tmp/mysql.sock
+    - socket=DIRECTORY_PATH/mysql.sock
 
 ```
 vim mysql.cfg
