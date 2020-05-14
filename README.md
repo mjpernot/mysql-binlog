@@ -2,7 +2,7 @@
 # Classification (U)
 
 # Description:
-  This program is used to maintain binary logs in a MySQL database to include flushing, backing up, and purging logs.
+  Program is used to maintain binary logs in a MySQL database to include flushing, backing up, and purging logs.
 
 
 ###  This README file is broken down into the following sections:
