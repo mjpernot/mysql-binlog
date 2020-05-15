@@ -4,6 +4,41 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [3.0.3] - 2020-04-22
+### Added
+- Added -y option to allow a flavor ID for the program lock.
+
+### Fixed
+- main:  Fixed handling command line arguments from SonarQube scan finding.
+- cp_zip_file:  Fixed problem with mutable default arguments issue.
+- flush_log_bkp:  Fixed problem with mutable default arguments issue.
+- fetch_miss_logs:  Fixed problem with mutable default arguments issue.
+- missing_log:  Fixed problem with mutable default arguments issue.
+- bkp_log_miss:  Fixed problem with mutable default arguments issue.
+- bkp_log_all:  Fixed problem with mutable default arguments issue.
+- purge_log_day:  Fixed problem with mutable default arguments issue.
+- purge_log_name:  Fixed problem with mutable default arguments issue.
+- run_program:  Fixed problem with mutable default arguments issue.
+
+### Changed
+- flush_log_bkp:  Replaced sys.exit() with print() and changed message to Warning message.
+- main:  Added program lock functionality to program.
+- run_program:  Replaced crt_srv_inst call with create_instance call.
+- main:  Refactored "if" statements in function.
+- run_program:  Changed variable name to standard naming convention.
+- purge_log_name:  Changed variable name to standard naming convention.
+- purge_log_day:  Changed variable name to standard naming convention.
+- bkp_log_all:  Changed variable name to standard naming convention.
+- bkp_log_miss:  Changed variable name to standard naming convention.
+- missing_log:  Changed variable name to standard naming convention.
+- fetch_miss_logs:  Changed variable name to standard naming convention.
+- fetch_all_logs:  Changed variable name to standard naming convention.
+- flush_log_bkp:  Changed variable name to standard naming convention.
+- Added \*\*kwargs to argument list to all functions.
+- config/mysql_cfg.py.TEMPLATE:  Change to generic template.
+- Documentation updates.
+
+
 ## [3.0.2] - 2018-12-06
 ### Changed
 - Documentation updates.
@@ -39,7 +74,7 @@ Breaking Change
 ### Changed
 - Convert program to use local libraries from ./lib directory.
 - Change single quotes to double quotes.
-- Help_Message:  Replace docstring with printing the programs __doc__.
+- Help_Message:  Replace docstring with printing the programs \_\_doc\_\_.
 
 
 ## [2.1.0] - 2016-09-15
