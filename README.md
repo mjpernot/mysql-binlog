@@ -66,7 +66,6 @@ pip install -r requirements-python-lib.txt --target mysql_lib/lib --trusted-host
 ```
 
 # Configuration:
-  * Replace **PYTHON_PROJECT** with the baseline path of the python program.
 
 Create MySQL configuration file.
 
