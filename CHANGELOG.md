@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [3.0.4] - 2020-11-09
+- Updated to use the mysql_libs v5.0.0 library.
+
+### Changed
+- config/mysql_cfg.py.TEMPLATE:  Changed entry name.
+
+
 ## [3.0.3] - 2020-04-22
 ### Added
 - Added -y option to allow a flavor ID for the program lock.
