@@ -34,7 +34,7 @@ import version
 __version__ = version.__version__
 
 
-def flush_log_bkp(args_array, server, **kwargs):
+def flush_log_bkp(args_array, server):
 
     """Function:  flush_log_bkp
 
@@ -54,7 +54,7 @@ def flush_log_bkp(args_array, server, **kwargs):
     return status
 
 
-def missing_log(args_array, server, **kwargs):
+def missing_log(args_array, server):
 
     """Function:  missing_log
 
@@ -74,7 +74,7 @@ def missing_log(args_array, server, **kwargs):
     return status
 
 
-def bkp_log_miss(args_array, server, **kwargs):
+def bkp_log_miss(args_array, server):
 
     """Function:  bkp_log_miss
 
@@ -94,7 +94,7 @@ def bkp_log_miss(args_array, server, **kwargs):
     return status
 
 
-def bkp_log_all(args_array, server, **kwargs):
+def bkp_log_all(args_array, server):
 
     """Function:  bkp_log_all
 
@@ -114,7 +114,7 @@ def bkp_log_all(args_array, server, **kwargs):
     return status
 
 
-def purge_log_day(args_array, server, **kwargs):
+def purge_log_day(args_array, server):
 
     """Function:  purge_log_day
 
@@ -134,7 +134,7 @@ def purge_log_day(args_array, server, **kwargs):
     return status
 
 
-def purge_log_name(args_array, server, **kwargs):
+def purge_log_name(args_array, server):
 
     """Function:  purge_log_name
 
