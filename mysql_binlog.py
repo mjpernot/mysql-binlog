@@ -42,14 +42,14 @@
             # Configuration file for MySQL Database:
             # User is normally root.
             user = "USER"
-            passwd = "PASSWORD"
+            japd = "PSWORD"
             host = "IP_ADDRESS"
             name = "HOSTNAME"
             sid = "SERVER_ID"
-            extra_def_file = "DIRECTORY_PATH/myextra.cfg"
+            extra_def_file = "PYTHON_PROJECT/config/mysql.cfg"
             serv_os = "Linux"
             port = 3306
-            cfg_file = "DIRECTORY_PATH/my.cnf"
+            cfg_file = "MYSQL_DIRECTORY/mysqld.cnf"
 
         NOTE:  Include the cfg_file even if running remotely as the file will
             be used in future releases.
@@ -66,7 +66,7 @@
             file under ~/mysql directory.
 
     Example:
-        mysql_binlog.py -F -c database -d config -l ./data -o ./dump
+        mysql_binlog.py -c database -d config -F -l /mysql/binlogs -o /dump
 
 """
 
