@@ -7,6 +7,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 ## [3.0.4] - 2020-11-09
 - Updated to use the mysql_libs v5.0.0 library.
 
+### Fixed
+- config/mysql.cfg.TEMPLATE:  Point to correct socket file.
+
 ### Changed
 - config/mysql_cfg.py.TEMPLATE:  Changed entry name.
 - Documentation updates.
