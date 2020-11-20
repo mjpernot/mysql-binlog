@@ -8,29 +8,30 @@
 
     Usage:
         mysql_binlog.py -c file -d path
-            {-F -o path -l path [-z]} |
-            {-K -o path} |
-            {-M -o path -l path [-z]} |
-            {-A -o path -l path [-z]} |
-            {-S number | -R file]} |
+            {-F -o path -l path [-z] |
+             -K -o path |
+             -M -o path -l path [-z] |
+             -A -o path -l path [-z] |
+             -S number |
+             -R file]}
             [-y flavor_id]
             [-v | -h]
 
     Arguments:
-        -c file => Name of configuration file.  Required argument.
-        -d dir path => Directory path to config file (-c). Required arg.
-        -F => Flush and backup current binary log.  Require:  -o, -l
-        -K => Print missing backed up binary logs.  Require:  -o
-        -M => Backup missing binary logs.  Require:  -o, -l.
-        -A => Backup all binary logs.  Require:  -o, -l.
-        -S number of days - purge binary logs earlier than N days ago.
-        -R file - purge binary logs before binary log file name.
-        -z => Compress binary log file during backup process.
-        -o dir_path => Log dump directory.  Required by: -F, -K, -M, -A
-        -l dir_path => MySQL log directory.  Required by: -F, -M, -A
-        -y value => A flavor id for the program lock.  To create unique lock.
-        -v => Display version of this program.
-        -h => Help and usage message.
+        -c file -> Name of configuration file.  Required argument.
+        -d dir path -> Directory path to config file (-c). Required arg.
+        -F -> Flush and backup current binary log.  Require:  -o, -l
+        -K -> Print missing backed up binary logs.  Require:  -o
+        -M -> Backup missing binary logs.  Require:  -o, -l.
+        -A -> Backup all binary logs.  Require:  -o, -l.
+        -S number of days -> purge binary logs earlier than N days ago.
+        -R file -> purge binary logs before binary log file name.
+        -z -> Compress binary log file during backup process.
+        -o dir_path -> Log dump directory.  Required by: -F, -K, -M, -A
+        -l dir_path -> MySQL log directory.  Required by: -F, -M, -A
+        -y value -> A flavor id for the program lock.  To create unique lock.
+        -v -> Display version of this program.
+        -h -> Help and usage message.
 
             NOTE 1:  Options -M and -A are XOR.
             NOTE 2:  Options -S and -R are XOR.
@@ -60,7 +61,7 @@
         Defaults Extra File format (config/mysql.cfg.TEMPLATE):
             [client]
             password="PASSWORD"
-            socket="DIRECTORY_PATH/mysql.sock"
+            socket="DIRECTORY_PATH/mysqld.sock"
 
         NOTE:  The socket information can be obtained from the my.cnf
             file under ~/mysql directory.
