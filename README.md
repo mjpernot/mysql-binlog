@@ -35,6 +35,7 @@
     - lib/arg_parser
     - lib/gen_libs
     - mysql_lib/mysql_libs
+    - mysql_lib/mysql_class
 
 
 # Installation:
@@ -67,43 +68,34 @@ pip install -r requirements-python-lib.txt --target mysql_lib/lib --trusted-host
 
 # Configuration:
 
-Create MySQL configuration file.
-
-```
-cd config
-cp mysql_cfg.py.TEMPLATE mysql_cfg.py
-```
-
-Make the appropriate change to the environment.
+Create MySQL configuration file and make the appropriate change to the environment.
   * Change these entries in the MySQL setup:
     - user = "USER"
-    - passwd = "PASSWORD"
+    - japd = "PSWORD"
     - host = "SERVER_IP"
     - name = "HOST_NAME"
     - sid = SERVER_ID
     - extra_def_file = "PYTHON_PROJECT/config/mysql.cfg"
-    - cfg_file = "DIRECTORY_PATH/my.cnf"
+    - cfg_file = "MYSQL_DIRECTORY/my.cnf"
 
   * Change these entries only if required:
     - serv_os = "Linux"
     - port = 3306
 
 ```
+cd config
+cp mysql_cfg.py.TEMPLATE mysql_cfg.py
 vim mysql_cfg.py
 chmod 600 mysql_cfg.py
 ```
 
-Create MySQL definition file.
+Create MySQL definition file and make the appropriate change to the environment.
+  * Change these entries in the MySQL definition file:
+    - password="PASSWORD"
+    - socket=DIRECTORY_PATH/mysqld.sock
 
 ```
 cp mysql.cfg.TEMPLATE mysql.cfg
-```
-Make the appropriate change to the environment.
-  * Change these entries in the MySQL definition file:
-    - password="PASSWORD"
-    - socket=DIRECTORY_PATH/mysql.sock
-
-```
 vim mysql.cfg
 chmod 600 mysql.cfg
 ```
@@ -122,8 +114,6 @@ chmod 600 mysql.cfg
 # Testing:
 
 # Unit Testing:
-
-### Description: Testing consists of unit testing for the functions in the mysql_binlog.py program.
 
 ### Installation:
 

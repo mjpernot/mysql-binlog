@@ -3,7 +3,7 @@
 # Unclassified until filled in.
 # User is normally root.
 user = 'USER'
-passwd = 'PASSWORD'
+japd = 'PSWORD'
 # MySQL DB host information
 host = 'SERVER_IP'
 name = 'HOST_NAME'
@@ -17,4 +17,4 @@ serv_os = 'Linux'
 port = 3306
 # MySQL configuration settings
 # Example:  /opt/lamp/mysql/my.cnf
-cfg_file = 'DIRECTORY_PATH/my.cnf'
+cfg_file = 'MYSQL_DIRECTORY/mysqld.cnf'
