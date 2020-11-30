@@ -182,7 +182,7 @@ def fetch_all_logs(server, **kwargs):
 
     Arguments:
         (input) server -> Database server instance.
-        (output) -> Return a list of binary log file names.
+        (output) mysql_logs -> A list of binary log file names.
 
     """
 
@@ -204,6 +204,7 @@ def fetch_miss_logs(args_array, server, **kwargs):
     Arguments:
         (input) args_array -> Array of command line options and values.
         (input) server -> Database server instance.
+        (output) List of missing MySQL binary logs.
 
     """
 
