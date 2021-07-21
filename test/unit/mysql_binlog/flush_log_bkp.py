@@ -42,9 +42,9 @@ class Server(object):
     Description:  Class stub holder for mysql_class.Server class.
 
     Methods:
-        __init__ -> Class initialization.
-        fetch_log -> fetch_log function.
-        flush_logs -> flush_logs function.
+        __init__
+        fetch_log
+        flush_logs
 
     """
 
@@ -55,7 +55,7 @@ class Server(object):
         Description:  Class initialization.
 
         Arguments:
-            (input) change -> True|False - Change return status.
+            (input) change
 
         """
 
@@ -99,9 +99,9 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialize testing environment.
-        test_flush_fails -> Test with failed flush.
-        test_flush_successful -> Test with successful flush.
+        setUp
+        test_flush_fails
+        test_flush_successful
 
     """
 
