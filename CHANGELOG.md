@@ -23,31 +23,15 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Added -y option to allow a flavor ID for the program lock.
 
 ### Fixed
-- main:  Fixed handling command line arguments from SonarQube scan finding.
-- cp_zip_file:  Fixed problem with mutable default arguments issue.
-- flush_log_bkp:  Fixed problem with mutable default arguments issue.
-- fetch_miss_logs:  Fixed problem with mutable default arguments issue.
-- missing_log:  Fixed problem with mutable default arguments issue.
-- bkp_log_miss:  Fixed problem with mutable default arguments issue.
-- bkp_log_all:  Fixed problem with mutable default arguments issue.
-- purge_log_day:  Fixed problem with mutable default arguments issue.
-- purge_log_name:  Fixed problem with mutable default arguments issue.
-- run_program:  Fixed problem with mutable default arguments issue.
+- main:  Fixed handling command line arguments.
+- Fixed problem with mutable default arguments issue in a number of functions.
 
 ### Changed
 - flush_log_bkp:  Replaced sys.exit() with print() and changed message to Warning message.
 - main:  Added program lock functionality to program.
 - run_program:  Replaced crt_srv_inst call with create_instance call.
 - main:  Refactored "if" statements in function.
-- run_program:  Changed variable name to standard naming convention.
-- purge_log_name:  Changed variable name to standard naming convention.
-- purge_log_day:  Changed variable name to standard naming convention.
-- bkp_log_all:  Changed variable name to standard naming convention.
-- bkp_log_miss:  Changed variable name to standard naming convention.
-- missing_log:  Changed variable name to standard naming convention.
-- fetch_miss_logs:  Changed variable name to standard naming convention.
-- fetch_all_logs:  Changed variable name to standard naming convention.
-- flush_log_bkp:  Changed variable name to standard naming convention.
+- Changed variable names to standard naming convention in a number of functions.
 - Added \*\*kwargs to argument list to all functions.
 - config/mysql_cfg.py.TEMPLATE:  Change to generic template.
 - Documentation updates.
