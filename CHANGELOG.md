@@ -7,6 +7,8 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 ## [3.1.0] - 2021-07-21
 ### Changed
 - config/mysql_cfg.py.TEMPLATE: Added SSL configuration entries.
+- Removed unnecessary \*\*kwargs in function argument list.
+- Documentation updates.
 
 
 ## [3.0.4] - 2020-11-09
