@@ -6,6 +6,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [3.1.0] - 2021-07-21
 ### Changed
+- run_program:  Capture and process status from connect method call.
 - run_program:  Replaced cmds_gen.disconect call with mysql_libs.disconnect call.
 - config/mysql_cfg.py.TEMPLATE: Added SSL configuration entries.
 - Removed unnecessary \*\*kwargs in function argument list.

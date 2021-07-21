@@ -378,15 +378,20 @@ def run_program(args_array, func_dict, ord_prec_list):
     ord_prec_list = list(ord_prec_list)
     server = mysql_libs.create_instance(args_array["-c"], args_array["-d"],
                                         mysql_class.Server)
-    server.connect()
+    server.connect(silent=True)
 
-    # Execute functions based on order of precedence.
-    for item in ord_prec_list:
+    if server.conn_msg:
+        print("run_program:  Error encountered on server(%s):  %s" %
+              (server.name, server.conn_msg))
 
-        if item in args_array:
-            func_dict[item](args_array, server)
+    else:
+        # Execute functions based on order of precedence.
+        for item in ord_prec_list:
 
-    mysql_libs.disconnect([server])
+            if item in args_array:
+                func_dict[item](args_array, server)
+
+        mysql_libs.disconnect([server])
 
 
 def main():
