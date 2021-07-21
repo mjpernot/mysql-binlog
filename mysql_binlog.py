@@ -77,8 +77,10 @@
             password="PASSWORD"
             socket="DIRECTORY_PATH/mysqld.sock"
 
-        NOTE:  The socket information can be obtained from the my.cnf
+        NOTE 1:  The socket information can be obtained from the my.cnf
             file under ~/mysql directory.
+        NOTE 2:  Socket use is only required to be set in certain conditions
+            when connecting using localhost.
 
     Example:
         mysql_binlog.py -c database -d config -F -l /mysql/binlogs -o /dump
