@@ -53,19 +53,30 @@
 
     Notes:
         MySQL configuration file format (config/mysql_cfg.py.TEMPLATE):
-
             # Configuration file for MySQL Database:
-            # User is normally root.
             user = "USER"
             japd = "PSWORD"
-            host = "IP_ADDRESS"
-            name = "HOSTNAME"
-            sid = "SERVER_ID"
+            host = "HOST_IP"
+            name = "HOST_NAME"
+            sid = SERVER_ID
             extra_def_file = "PYTHON_PROJECT/config/mysql.cfg"
             serv_os = "Linux"
             port = 3306
             cfg_file = "MYSQL_DIRECTORY/mysqld.cnf"
 
+            # If SSL connections are being used, configure one or more of these
+                entries:
+            ssl_client_ca = None
+            ssl_client_key = None
+            ssl_client_cert = None
+
+            # Only changes these if necessary and have knowledge in MySQL
+                SSL configuration setup:
+            ssl_client_flag = None
+            ssl_disabled = False
+            ssl_verify_id = False
+            ssl_verify_cert = False
+            
         NOTE:  Include the cfg_file even if running remotely as the file will
             be used in future releases.
 
