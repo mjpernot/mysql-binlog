@@ -223,7 +223,7 @@ class UnitTest(unittest.TestCase):
                           "-M": bkp_log_miss, "-A": bkp_log_all,
                           "-S": purge_log_day, "-R": purge_log_name}
 
-    @mock.patch("mysql_binlog.cmds_gen.disconnect",
+    @mock.patch("mysql_binlog.mysql_libs.disconnect",
                 mock.Mock(return_value=True))
     @mock.patch("mysql_binlog.mysql_libs.create_instance")
     def test_two_functions(self, mock_inst):
@@ -241,7 +241,7 @@ class UnitTest(unittest.TestCase):
         self.assertFalse(mysql_binlog.run_program(
             self.args_array2, self.func_dict, self.ord_prec_list))
 
-    @mock.patch("mysql_binlog.cmds_gen.disconnect",
+    @mock.patch("mysql_binlog.mysql_libs.disconnect",
                 mock.Mock(return_value=True))
     @mock.patch("mysql_binlog.mysql_libs.create_instance")
     def test_one_function(self, mock_inst):
