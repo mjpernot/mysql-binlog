@@ -41,8 +41,8 @@ def flush_log_bkp(args_array, server):
     Description:  flush_log_bkp function.
 
     Arguments:
-        (input) args_array -> Array of command line options and values.
-        (input) server -> Database server instance.
+        (input) args_array
+        (input) server
 
     """
 
@@ -61,8 +61,8 @@ def missing_log(args_array, server):
     Description:  missing_log function.
 
     Arguments:
-        (input) args_array -> Array of command line options and values.
-        (input) server -> Database server instance.
+        (input) args_array
+        (input) server
 
     """
 
@@ -81,8 +81,8 @@ def bkp_log_miss(args_array, server):
     Description:  bkp_log_miss function.
 
     Arguments:
-        (input) args_array -> Array of command line options and values.
-        (input) server -> Database server instance.
+        (input) args_array
+        (input) server
 
     """
 
@@ -101,8 +101,8 @@ def bkp_log_all(args_array, server):
     Description:  bkp_log_all function.
 
     Arguments:
-        (input) args_array -> Array of command line options and values.
-        (input) server -> Database server instance.
+        (input) args_array
+        (input) server
 
     """
 
@@ -121,8 +121,8 @@ def purge_log_day(args_array, server):
     Description:  purge_log_day function.
 
     Arguments:
-        (input) args_array -> Array of command line options and values.
-        (input) server -> Database server instance.
+        (input) args_array
+        (input) server
 
     """
 
@@ -141,8 +141,8 @@ def purge_log_name(args_array, server):
     Description:  purge_log_name function.
 
     Arguments:
-        (input) args_array -> Array of command line options and values.
-        (input) server -> Database server instance.
+        (input) args_array
+        (input) server
 
     """
 
@@ -161,8 +161,8 @@ class Server(object):
     Description:  Class stub holder for mysql_class.Server class.
 
     Methods:
-        __init__ -> Class initialization.
-        connect -> connect method.
+        __init__
+        connect
 
     """
 
@@ -198,9 +198,9 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialize testing environment.
-        test_two_functions -> Test with two function call.
-        test_one_function -> Test with one function call.
+        setUp
+        test_two_functions
+        test_one_function
 
     """
 
