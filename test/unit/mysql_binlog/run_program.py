@@ -29,6 +29,7 @@ import mock
 # Local
 sys.path.append(os.getcwd())
 import mysql_binlog
+import lib.gen_libs as gen_libs
 import version
 
 __version__ = version.__version__
@@ -177,8 +178,10 @@ class Server(object):
         """
 
         self.current_log = "Log3"
+        self.name = "ServerName"
+        self.conn_msg = None
 
-    def connect(self):
+    def connect(self, silent=False):
 
         """Method:  connect
 
@@ -188,7 +191,12 @@ class Server(object):
 
         """
 
-        return True
+        status = True
+
+        if silent:
+            status = True
+
+        return status
 
 
 class UnitTest(unittest.TestCase):
@@ -199,6 +207,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp
+        test_connect_failure
+        test_connect_success
         test_two_functions
         test_one_function
 
@@ -222,6 +232,43 @@ class UnitTest(unittest.TestCase):
         self.func_dict = {"-F": flush_log_bkp, "-K": missing_log,
                           "-M": bkp_log_miss, "-A": bkp_log_all,
                           "-S": purge_log_day, "-R": purge_log_name}
+
+    @mock.patch("mysql_binlog.mysql_libs.create_instance")
+    def test_connect_failure(self, mock_inst):
+
+        """Function:  test_connect_failure
+
+        Description:  Test with failed connection.
+
+        Arguments:
+
+        """
+
+        self.server.conn_msg = "Error connection message"
+
+        mock_inst.return_value = self.server
+
+        with gen_libs.no_std_out():
+            self.assertFalse(mysql_binlog.run_program(
+                self.args_array, self.func_dict, self.ord_prec_list))
+
+    @mock.patch("mysql_binlog.mysql_libs.disconnect",
+                mock.Mock(return_value=True))
+    @mock.patch("mysql_binlog.mysql_libs.create_instance")
+    def test_connect_success(self, mock_inst):
+
+        """Function:  test_connect_success
+
+        Description:  Test with successful connection.
+
+        Arguments:
+
+        """
+
+        mock_inst.return_value = self.server
+
+        self.assertFalse(mysql_binlog.run_program(
+            self.args_array, self.func_dict, self.ord_prec_list))
 
     @mock.patch("mysql_binlog.mysql_libs.disconnect",
                 mock.Mock(return_value=True))
