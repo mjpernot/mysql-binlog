@@ -41,9 +41,9 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialize testing environment.
-        test_compress_file -> Test with compression option.
-        test_copy_file -> Test with default configuration.
+        setUp
+        test_compress_file
+        test_copy_file
 
     """
 
