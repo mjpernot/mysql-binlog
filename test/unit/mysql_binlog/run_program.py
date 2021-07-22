@@ -29,6 +29,7 @@ import mock
 # Local
 sys.path.append(os.getcwd())
 import mysql_binlog
+import lib.gen_libs as gen_libs
 import version
 
 __version__ = version.__version__
@@ -41,8 +42,8 @@ def flush_log_bkp(args_array, server):
     Description:  flush_log_bkp function.
 
     Arguments:
-        (input) args_array -> Array of command line options and values.
-        (input) server -> Database server instance.
+        (input) args_array
+        (input) server
 
     """
 
@@ -61,8 +62,8 @@ def missing_log(args_array, server):
     Description:  missing_log function.
 
     Arguments:
-        (input) args_array -> Array of command line options and values.
-        (input) server -> Database server instance.
+        (input) args_array
+        (input) server
 
     """
 
@@ -81,8 +82,8 @@ def bkp_log_miss(args_array, server):
     Description:  bkp_log_miss function.
 
     Arguments:
-        (input) args_array -> Array of command line options and values.
-        (input) server -> Database server instance.
+        (input) args_array
+        (input) server
 
     """
 
@@ -101,8 +102,8 @@ def bkp_log_all(args_array, server):
     Description:  bkp_log_all function.
 
     Arguments:
-        (input) args_array -> Array of command line options and values.
-        (input) server -> Database server instance.
+        (input) args_array
+        (input) server
 
     """
 
@@ -121,8 +122,8 @@ def purge_log_day(args_array, server):
     Description:  purge_log_day function.
 
     Arguments:
-        (input) args_array -> Array of command line options and values.
-        (input) server -> Database server instance.
+        (input) args_array
+        (input) server
 
     """
 
@@ -141,8 +142,8 @@ def purge_log_name(args_array, server):
     Description:  purge_log_name function.
 
     Arguments:
-        (input) args_array -> Array of command line options and values.
-        (input) server -> Database server instance.
+        (input) args_array
+        (input) server
 
     """
 
@@ -161,8 +162,8 @@ class Server(object):
     Description:  Class stub holder for mysql_class.Server class.
 
     Methods:
-        __init__ -> Class initialization.
-        connect -> connect method.
+        __init__
+        connect
 
     """
 
@@ -177,8 +178,10 @@ class Server(object):
         """
 
         self.current_log = "Log3"
+        self.name = "ServerName"
+        self.conn_msg = None
 
-    def connect(self):
+    def connect(self, silent=False):
 
         """Method:  connect
 
@@ -188,7 +191,12 @@ class Server(object):
 
         """
 
-        return True
+        status = True
+
+        if silent:
+            status = True
+
+        return status
 
 
 class UnitTest(unittest.TestCase):
@@ -198,9 +206,11 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialize testing environment.
-        test_two_functions -> Test with two function call.
-        test_one_function -> Test with one function call.
+        setUp
+        test_connect_failure
+        test_connect_success
+        test_two_functions
+        test_one_function
 
     """
 
@@ -223,7 +233,44 @@ class UnitTest(unittest.TestCase):
                           "-M": bkp_log_miss, "-A": bkp_log_all,
                           "-S": purge_log_day, "-R": purge_log_name}
 
-    @mock.patch("mysql_binlog.cmds_gen.disconnect",
+    @mock.patch("mysql_binlog.mysql_libs.create_instance")
+    def test_connect_failure(self, mock_inst):
+
+        """Function:  test_connect_failure
+
+        Description:  Test with failed connection.
+
+        Arguments:
+
+        """
+
+        self.server.conn_msg = "Error connection message"
+
+        mock_inst.return_value = self.server
+
+        with gen_libs.no_std_out():
+            self.assertFalse(mysql_binlog.run_program(
+                self.args_array, self.func_dict, self.ord_prec_list))
+
+    @mock.patch("mysql_binlog.mysql_libs.disconnect",
+                mock.Mock(return_value=True))
+    @mock.patch("mysql_binlog.mysql_libs.create_instance")
+    def test_connect_success(self, mock_inst):
+
+        """Function:  test_connect_success
+
+        Description:  Test with successful connection.
+
+        Arguments:
+
+        """
+
+        mock_inst.return_value = self.server
+
+        self.assertFalse(mysql_binlog.run_program(
+            self.args_array, self.func_dict, self.ord_prec_list))
+
+    @mock.patch("mysql_binlog.mysql_libs.disconnect",
                 mock.Mock(return_value=True))
     @mock.patch("mysql_binlog.mysql_libs.create_instance")
     def test_two_functions(self, mock_inst):
@@ -241,7 +288,7 @@ class UnitTest(unittest.TestCase):
         self.assertFalse(mysql_binlog.run_program(
             self.args_array2, self.func_dict, self.ord_prec_list))
 
-    @mock.patch("mysql_binlog.cmds_gen.disconnect",
+    @mock.patch("mysql_binlog.mysql_libs.disconnect",
                 mock.Mock(return_value=True))
     @mock.patch("mysql_binlog.mysql_libs.create_instance")
     def test_one_function(self, mock_inst):
