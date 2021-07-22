@@ -5,6 +5,10 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 
 ## [3.1.0] - 2021-07-21
+- Updated to work in a SSL environment.
+- Updated to use the mysql_libs v5.2.1 library.
+- Updated to work in MySQL 8.0 and 5.7 environments.
+
 ### Changed
 - run_program:  Capture and process status from connect method call.
 - run_program:  Replaced cmds_gen.disconect call with mysql_libs.disconnect call.
