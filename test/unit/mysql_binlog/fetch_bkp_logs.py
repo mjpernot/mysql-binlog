@@ -41,12 +41,12 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialize testing environment.
-        test_all_removed -> Rest with all items removed.
-        test_one_list -> Test with one item in list.
-        test_empty_list -> Test with empty list.
-        test_gz_file -> Test with gz in file list.
-        test_file_list -> Test with default file list.
+        setUp
+        test_all_removed
+        test_one_list
+        test_empty_list
+        test_gz_file
+        test_file_list
 
     """
 

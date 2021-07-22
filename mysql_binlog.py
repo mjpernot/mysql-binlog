@@ -20,15 +20,29 @@
     Arguments:
         -c file -> Name of configuration file.  Required argument.
         -d dir path -> Directory path to config file (-c). Required arg.
+
         -F -> Flush and backup current binary log.  Require:  -o, -l
+            -o dir_path -> Log dump directory.
+            -l dir_path -> MySQL log directory.
+            -z -> Compress binary log file during backup process.
+
         -K -> Print missing backed up binary logs.  Require:  -o
+            -o dir_path -> Log dump directory.
+
         -M -> Backup missing binary logs.  Require:  -o, -l.
+            -o dir_path -> Log dump directory.
+            -l dir_path -> MySQL log directory.
+            -z -> Compress binary log file during backup process.
+
         -A -> Backup all binary logs.  Require:  -o, -l.
+            -o dir_path -> Log dump directory.
+            -l dir_path -> MySQL log directory.
+            -z -> Compress binary log file during backup process.
+
         -S number of days -> purge binary logs earlier than N days ago.
+
         -R file -> purge binary logs before binary log file name.
-        -z -> Compress binary log file during backup process.
-        -o dir_path -> Log dump directory.  Required by: -F, -K, -M, -A
-        -l dir_path -> MySQL log directory.  Required by: -F, -M, -A
+
         -y value -> A flavor id for the program lock.  To create unique lock.
         -v -> Display version of this program.
         -h -> Help and usage message.
@@ -39,18 +53,29 @@
 
     Notes:
         MySQL configuration file format (config/mysql_cfg.py.TEMPLATE):
-
             # Configuration file for MySQL Database:
-            # User is normally root.
             user = "USER"
             japd = "PSWORD"
-            host = "IP_ADDRESS"
-            name = "HOSTNAME"
-            sid = "SERVER_ID"
+            host = "HOST_IP"
+            name = "HOST_NAME"
+            sid = SERVER_ID
             extra_def_file = "PYTHON_PROJECT/config/mysql.cfg"
             serv_os = "Linux"
             port = 3306
             cfg_file = "MYSQL_DIRECTORY/mysqld.cnf"
+
+            # If SSL connections are being used, configure one or more of these
+                entries:
+            ssl_client_ca = None
+            ssl_client_key = None
+            ssl_client_cert = None
+
+            # Only changes these if necessary and have knowledge in MySQL
+                SSL configuration setup:
+            ssl_client_flag = None
+            ssl_disabled = False
+            ssl_verify_id = False
+            ssl_verify_cert = False
 
         NOTE:  Include the cfg_file even if running remotely as the file will
             be used in future releases.
@@ -63,8 +88,10 @@
             password="PASSWORD"
             socket="DIRECTORY_PATH/mysqld.sock"
 
-        NOTE:  The socket information can be obtained from the my.cnf
+        NOTE 1:  The socket information can be obtained from the my.cnf
             file under ~/mysql directory.
+        NOTE 2:  Socket use is only required to be set in certain conditions
+            when connecting using localhost.
 
     Example:
         mysql_binlog.py -c database -d config -F -l /mysql/binlogs -o /dump
@@ -83,7 +110,6 @@ import datetime
 import lib.arg_parser as arg_parser
 import lib.gen_libs as gen_libs
 import lib.gen_class as gen_class
-import lib.cmds_gen as cmds_gen
 import mysql_lib.mysql_libs as mysql_libs
 import mysql_lib.mysql_class as mysql_class
 import version
@@ -105,7 +131,7 @@ def help_message():
     print(__doc__)
 
 
-def cp_zip_file(args_array, fname, **kwargs):
+def cp_zip_file(args_array, fname):
 
     """Function:  cp_zip_file
 
@@ -124,7 +150,7 @@ def cp_zip_file(args_array, fname, **kwargs):
         gen_libs.compress(os.path.join(args_array["-o"], fname))
 
 
-def flush_log_bkp(args_array, server, **kwargs):
+def flush_log_bkp(args_array, server):
 
     """Function:  flush_log_bkp
 
@@ -147,7 +173,7 @@ def flush_log_bkp(args_array, server, **kwargs):
         print("Warning: Flush of binary log: %s did not complete." % (cur_log))
 
 
-def fetch_bkp_logs(dir_path, **kwargs):
+def fetch_bkp_logs(dir_path):
 
     """Function:  fetch_bkp_logs
 
@@ -173,7 +199,7 @@ def fetch_bkp_logs(dir_path, **kwargs):
     return fnames
 
 
-def fetch_all_logs(server, **kwargs):
+def fetch_all_logs(server):
 
     """Function:  fetch_all_logs
 
@@ -194,7 +220,7 @@ def fetch_all_logs(server, **kwargs):
     return mysql_logs
 
 
-def fetch_miss_logs(args_array, server, **kwargs):
+def fetch_miss_logs(args_array, server):
 
     """Function:  fetch_miss_logs
 
@@ -220,7 +246,7 @@ def fetch_miss_logs(args_array, server, **kwargs):
     return gen_libs.is_missing_lists(mysql_logs, bkp_logs)
 
 
-def missing_log(args_array, server, **kwargs):
+def missing_log(args_array, server):
 
     """Function:  missing_log
 
@@ -243,7 +269,7 @@ def missing_log(args_array, server, **kwargs):
             print("\t{0}".format(item))
 
 
-def bkp_log_miss(args_array, server, **kwargs):
+def bkp_log_miss(args_array, server):
 
     """Function:  bkp_log_miss
 
@@ -262,7 +288,7 @@ def bkp_log_miss(args_array, server, **kwargs):
         cp_zip_file(args_array, item)
 
 
-def bkp_log_all(args_array, server, **kwargs):
+def bkp_log_all(args_array, server):
 
     """Function:  bkp_log_all
 
@@ -298,7 +324,7 @@ def bkp_log_all(args_array, server, **kwargs):
         cp_zip_file(args_array, item)
 
 
-def purge_log_day(args_array, server, **kwargs):
+def purge_log_day(args_array, server):
 
     """Function:  purge_log_day
 
@@ -320,7 +346,7 @@ def purge_log_day(args_array, server, **kwargs):
     mysql_libs.purge_bin_logs(server, "before", prg_dtg)
 
 
-def purge_log_name(args_array, server, **kwargs):
+def purge_log_name(args_array, server):
 
     """Function:  purge_log_name
 
@@ -345,7 +371,7 @@ def purge_log_name(args_array, server, **kwargs):
         print("Error:  {0} log is not present.".format(args_array["-R"]))
 
 
-def run_program(args_array, func_dict, ord_prec_list, **kwargs):
+def run_program(args_array, func_dict, ord_prec_list):
 
     """Function:  run_program
 
@@ -363,15 +389,20 @@ def run_program(args_array, func_dict, ord_prec_list, **kwargs):
     ord_prec_list = list(ord_prec_list)
     server = mysql_libs.create_instance(args_array["-c"], args_array["-d"],
                                         mysql_class.Server)
-    server.connect()
+    server.connect(silent=True)
 
-    # Execute functions based on order of precedence.
-    for item in ord_prec_list:
+    if server.conn_msg:
+        print("run_program:  Error encountered on server(%s):  %s" %
+              (server.name, server.conn_msg))
 
-        if item in args_array:
-            func_dict[item](args_array, server)
+    else:
+        # Execute functions based on order of precedence.
+        for item in ord_prec_list:
 
-    cmds_gen.disconnect([server])
+            if item in args_array:
+                func_dict[item](args_array, server)
+
+        mysql_libs.disconnect([server])
 
 
 def main():
