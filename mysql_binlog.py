@@ -76,7 +76,7 @@
             ssl_disabled = False
             ssl_verify_id = False
             ssl_verify_cert = False
-            
+
         NOTE:  Include the cfg_file even if running remotely as the file will
             be used in future releases.
 
