@@ -35,6 +35,30 @@ import version
 __version__ = version.__version__
 
 
+class Cfg(object):
+
+    """Class:  Cfg
+
+    Description:  Class which is a representation of a cfg module.
+
+    Methods:
+        __init__
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Initialization instance of the Cfg class.
+
+        Arguments:
+
+        """
+
+        self.binary_log = "/opt/mysql/data"
+
+
 class ProgramLock(object):
 
     """Class:  ProgramLock
@@ -62,6 +86,30 @@ class ProgramLock(object):
         self.flavor = flavor
 
 
+class CmdLine(object):
+
+    """Class:  CmdLine
+
+    Description:  Class which is a representation of a command line.
+
+    Methods:
+        __init__
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Initialization instance of the class.
+
+        Arguments:
+
+        """
+
+        self.argv = ["Program", "-c", "CfgFile", "-d", "CfgDir"]
+
+
 class UnitTest(unittest.TestCase):
 
     """Class:  UnitTest
@@ -70,6 +118,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp
+        test_l_opt_no_req_options2
+        test_l_opt_no_req_options
         test_help_true
         test_help_false
         test_arg_req_true
@@ -95,32 +145,50 @@ class UnitTest(unittest.TestCase):
         Arguments:
 
         """
-        class CmdLine(object):
-
-            """Class:  CmdLine
-
-            Description:  Class which is a representation of a command line.
-
-            Methods:
-                __init__
-
-            """
-
-            def __init__(self):
-
-                """Method:  __init__
-
-                Description:  Initialization instance of the class.
-
-                Arguments:
-
-                """
-
-                self.argv = ["Program", "-c", "CfgFile", "-d", "CfgDir"]
 
         self.cmd_line = CmdLine()
         self.args_array = {"-c": "CfgFile", "-d": "CfgDir"}
+        self.args_array2 = {"-c": "CfgFile", "-d": "CfgDir", "-l": "/path"}
         self.proglock = ProgramLock(["cmdline"], "FlavorID")
+        self.cfg = Cfg()
+
+    @mock.patch("mysql_binlog.gen_libs.get_inst")
+    @mock.patch("mysql_binlog.gen_libs.help_func")
+    @mock.patch("mysql_binlog.arg_parser.arg_parse2")
+    def test_l_opt_no_req_options2(self, mock_arg, mock_help, mock_inst):
+
+        """Function:  test_l_opt_no_req_options2
+
+        Description:  Test with no -l option and no required options passed.
+
+        Arguments:
+
+        """
+
+        mock_arg.return_value = self.args_array2
+        mock_help.return_value = True
+        mock_inst.return_value = self.cmd_line
+
+        self.assertFalse(mysql_binlog.main())
+
+    @mock.patch("mysql_binlog.gen_libs.get_inst")
+    @mock.patch("mysql_binlog.gen_libs.help_func")
+    @mock.patch("mysql_binlog.arg_parser.arg_parse2")
+    def test_l_opt_no_req_options(self, mock_arg, mock_help, mock_inst):
+
+        """Function:  test_l_opt_no_req_options
+
+        Description:  Test with no -l option and no required options passed.
+
+        Arguments:
+
+        """
+
+        mock_arg.return_value = self.args_array
+        mock_help.return_value = True
+        mock_inst.return_value = self.cmd_line
+
+        self.assertFalse(mysql_binlog.main())
 
     @mock.patch("mysql_binlog.gen_libs.get_inst")
     @mock.patch("mysql_binlog.gen_libs.help_func")
