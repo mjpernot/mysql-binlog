@@ -6,7 +6,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [3.1.1] - 2022-05-31
 ### Changed
-- config/mysql_cfg.py.TEMPLATE: Added TLS entry to configuration.
+- main: Gets binary_log entry and inserts into args_array if -l option is not passed for certain options.
+- config/mysql_cfg.py.TEMPLATE: Added TLS and binary_log entries to configuration.
+- Documentation updates.
 
 
 ## [3.1.0] - 2021-07-21
