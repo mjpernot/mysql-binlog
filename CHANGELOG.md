@@ -5,6 +5,8 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 
 ## [3.1.1] - 2022-05-31
+### Changed
+- config/mysql_cfg.py.TEMPLATE: Added TLS entry to configuration.
 
 
 ## [3.1.0] - 2021-07-21
