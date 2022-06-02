@@ -118,8 +118,11 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp
-        test_l_opt_no_req_options2
-        test_l_opt_no_req_options
+        test_binary_log2
+        test_binary_log
+        test_l_opt_req_options3
+        test_l_opt_req_options2
+        test_l_opt_req_options
         test_help_true
         test_help_false
         test_arg_req_true
@@ -149,17 +152,84 @@ class UnitTest(unittest.TestCase):
         self.cmd_line = CmdLine()
         self.args_array = {"-c": "CfgFile", "-d": "CfgDir"}
         self.args_array2 = {"-c": "CfgFile", "-d": "CfgDir", "-l": "/path"}
+        self.args_array3 = {"-c": "CfgFile", "-d": "CfgDir", "-M": True}
         self.proglock = ProgramLock(["cmdline"], "FlavorID")
         self.cfg = Cfg()
+
+    @mock.patch("mysql_binlog.gen_libs.load_module")
+    @mock.patch("mysql_binlog.gen_libs.get_inst")
+    @mock.patch("mysql_binlog.gen_libs.help_func")
+    @mock.patch("mysql_binlog.arg_parser.arg_parse2")
+    def test_binary_log2(self, mock_arg, mock_help, mock_inst, mock_cfg):
+
+        """Function:  test_binary_log2
+
+        Description:  Test with test_binary_log not set.
+
+        Arguments:
+
+        """
+
+        self.cfg.binary_log = None
+
+        mock_arg.return_value = self.args_array3
+        mock_help.return_value = True
+        mock_inst.return_value = self.cmd_line
+        mock_cfg.return_value = self.cfg
+
+        self.assertFalse(mysql_binlog.main())
+
+    @mock.patch("mysql_binlog.gen_libs.load_module")
+    @mock.patch("mysql_binlog.gen_libs.get_inst")
+    @mock.patch("mysql_binlog.gen_libs.help_func")
+    @mock.patch("mysql_binlog.arg_parser.arg_parse2")
+    def test_binary_log(self, mock_arg, mock_help, mock_inst, mock_cfg):
+
+        """Function:  test_binary_log
+
+        Description:  Test with test_binary_log set.
+
+        Arguments:
+
+        """
+
+        mock_arg.return_value = self.args_array3
+        mock_help.return_value = True
+        mock_inst.return_value = self.cmd_line
+        mock_cfg.return_value = self.cfg
+
+        self.assertFalse(mysql_binlog.main())
+
+    @mock.patch("mysql_binlog.gen_libs.load_module")
+    @mock.patch("mysql_binlog.gen_libs.get_inst")
+    @mock.patch("mysql_binlog.gen_libs.help_func")
+    @mock.patch("mysql_binlog.arg_parser.arg_parse2")
+    def test_l_opt_req_options3(self, mock_arg, mock_help, mock_inst,
+                                mock_cfg):
+
+        """Function:  test_l_opt_req_options3
+
+        Description:  Test with no -l option, but with required options passed.
+
+        Arguments:
+
+        """
+
+        mock_arg.return_value = self.args_array3
+        mock_help.return_value = True
+        mock_inst.return_value = self.cmd_line
+        mock_cfg.return_value = self.cfg
+
+        self.assertFalse(mysql_binlog.main())
 
     @mock.patch("mysql_binlog.gen_libs.get_inst")
     @mock.patch("mysql_binlog.gen_libs.help_func")
     @mock.patch("mysql_binlog.arg_parser.arg_parse2")
-    def test_l_opt_no_req_options2(self, mock_arg, mock_help, mock_inst):
+    def test_l_opt_req_options2(self, mock_arg, mock_help, mock_inst):
 
-        """Function:  test_l_opt_no_req_options2
+        """Function:  test_l_opt_req_options2
 
-        Description:  Test with no -l option and no required options passed.
+        Description:  Test with -l option and no required options passed.
 
         Arguments:
 
@@ -174,9 +244,9 @@ class UnitTest(unittest.TestCase):
     @mock.patch("mysql_binlog.gen_libs.get_inst")
     @mock.patch("mysql_binlog.gen_libs.help_func")
     @mock.patch("mysql_binlog.arg_parser.arg_parse2")
-    def test_l_opt_no_req_options(self, mock_arg, mock_help, mock_inst):
+    def test_l_opt_req_options(self, mock_arg, mock_help, mock_inst):
 
-        """Function:  test_l_opt_no_req_options
+        """Function:  test_l_opt_req_options
 
         Description:  Test with no -l option and no required options passed.
 
