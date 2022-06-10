@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [3.1.1] - 2022-05-31
+- Upgrade mysql-connector to v8.0.22.
+- Upgraded mysql-libs to v5.3.1.
+
+### Changed
+- main: Gets binary_log entry and inserts into args_array if -l option is not passed for certain options.
+- config/mysql_cfg.py.TEMPLATE: Added TLS and binary_log entries to configuration.
+- Documentation updates.
+
+
 ## [3.1.0] - 2021-07-21
 - Updated to work in a SSL environment.
 - Updated to use the mysql_libs v5.2.1 library.
