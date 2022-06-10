@@ -8,10 +8,10 @@
 
     Usage:
         mysql_binlog.py -c file -d path
-            {-F -o path -l path [-z] |
+            {-F -o path [-l path] [-z] |
              -K -o path |
-             -M -o path -l path [-z] |
-             -A -o path -l path [-z] |
+             -M -o path [-l path] [-z] |
+             -A -o path [-l path] [-z] |
              -S number |
              -R file]}
             [-y flavor_id]
@@ -21,22 +21,25 @@
         -c file -> Name of configuration file.  Required argument.
         -d dir path -> Directory path to config file (-c). Required arg.
 
-        -F -> Flush and backup current binary log.  Require:  -o, -l
+        -F -> Flush and backup current binary log.  Require:  -o
             -o dir_path -> Log dump directory.
-            -l dir_path -> MySQL log directory.
+            -l dir_path -> MySQL binary log directory.  Overrides the
+                configuration file binary_log entry.
             -z -> Compress binary log file during backup process.
 
         -K -> Print missing backed up binary logs.  Require:  -o
             -o dir_path -> Log dump directory.
 
-        -M -> Backup missing binary logs.  Require:  -o, -l.
+        -M -> Backup missing binary logs.  Require:  -o
             -o dir_path -> Log dump directory.
-            -l dir_path -> MySQL log directory.
+            -l dir_path -> MySQL binary log directory.  Overrides the
+                configuration file binary_log entry.
             -z -> Compress binary log file during backup process.
 
-        -A -> Backup all binary logs.  Require:  -o, -l.
+        -A -> Backup all binary logs.  Require:  -o
             -o dir_path -> Log dump directory.
-            -l dir_path -> MySQL log directory.
+            -l dir_path -> MySQL binary log directory.  Overrides the
+                configuration file binary_log entry.
             -z -> Compress binary log file during backup process.
 
         -S number of days -> purge binary logs earlier than N days ago.
@@ -47,9 +50,11 @@
         -v -> Display version of this program.
         -h -> Help and usage message.
 
-            NOTE 1:  Options -M and -A are XOR.
-            NOTE 2:  Options -S and -R are XOR.
-            NOTE 3:  -v or -h overrides the other options.
+            NOTE 1: Options -M and -A are XOR.
+            NOTE 2: Options -S and -R are XOR.
+            NOTE 3: -v or -h overrides the other options.
+            NOTE 4: If binary_log is not set in the configuration file, then
+                will require -l option for -M, -F, and -A options.
 
     Notes:
         MySQL configuration file format (config/mysql_cfg.py.TEMPLATE):
@@ -63,6 +68,7 @@
             serv_os = "Linux"
             port = 3306
             cfg_file = "MYSQL_DIRECTORY/mysqld.cnf"
+            binary_log = None
 
             # If SSL connections are being used, configure one or more of these
                 entries:
@@ -413,16 +419,17 @@ def main():
         line arguments and values.
 
     Variables:
-        dir_chk_list -> contains options which will be directories.
-        func_dict -> dictionary list for the function calls or other options.
-        opt_con_req_list -> contains the options that require other options.
-        xor_noreq_list -> contains options that are XOR, but are not required.
-        ord_prec_array -> holds options in order of precedence to be executed.
-        opt_req_list -> contains the options that are required for the program.
-        opt_val_list -> contains options which require values.
+        dir_chk_list -> contains options which will be directories
+        func_dict -> dictionary list for the function calls or other options
+        opt_con_req_list -> contains the options that require other options
+        xor_noreq_list -> contains options that are XOR, but are not required
+        ord_prec_array -> holds options in order of precedence to be executed
+        opt_req_list -> contains the options that are required for the program
+        opt_val_list -> contains options which require values
+        req_option -> contains options which require -l option
 
     Arguments:
-        (input) argv -> Arguments from the command line.
+        (input) argv -> Arguments from the command line
 
     """
 
@@ -436,9 +443,17 @@ def main():
     ord_prec_list = ["-F", "-K", "-M", "-A", "-S", "-R"]
     opt_req_list = ["-c", "-d"]
     opt_val_list = ["-c", "-d", "-l", "-o", "-R", "-S", "-y"]
+    req_option = {"-F", "-M", "-A"}
 
     # Process argument list from command line.
     args_array = arg_parser.arg_parse2(cmdline.argv, opt_val_list)
+
+    # Get binary_log entry if -l option is not passed for certain options
+    if "-l" not in args_array and (args_array.viewkeys() & req_option):
+        cfg = gen_libs.load_module(args_array["-c"], args_array["-d"])
+
+        if hasattr(cfg, "binary_log") and cfg.binary_log:
+            args_array["-l"] = cfg.binary_log
 
     if not gen_libs.help_func(args_array, __version__, help_message) \
        and not arg_parser.arg_require(args_array, opt_req_list) \

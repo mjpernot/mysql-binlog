@@ -20,6 +20,9 @@ serv_os = "Linux"
 port = 3306
 # MySQL configuration settings
 cfg_file = "MYSQL_DIRECTORY/mysqld.cnf"
+# MySQL Binary Log path
+# Example: binary_log = "/opt/mysql/data"
+binary_log = None
 # SSL Configuration settings
 # If not set will connect to MySQL without using SSL connections.
 # File containing the SSL certificate authority.
@@ -50,3 +53,8 @@ ssl_verify_id = False
 # SSL Verify Certification
 # Will validate the CA certification.
 ssl_verify_cert = False
+# TLS Version settings
+# TLS Version(s) allowed to be used to connect to MySQL.
+# If an empty list, then will use the default TLS version provided by the MySQL server.
+# Example: tls_versions = ["TLSv1.1", "TLSv1.2"]
+tls_versions = []
