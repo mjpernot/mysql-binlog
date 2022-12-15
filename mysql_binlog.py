@@ -105,6 +105,8 @@
 """
 
 # Libraries and Global Variables
+from __future__ import print_function
+from __future__ import absolute_import
 
 # Standard
 import sys
@@ -113,12 +115,21 @@ import time
 import datetime
 
 # Local
-import lib.arg_parser as arg_parser
-import lib.gen_libs as gen_libs
-import lib.gen_class as gen_class
-import mysql_lib.mysql_libs as mysql_libs
-import mysql_lib.mysql_class as mysql_class
-import version
+try:
+    from .lib import arg_parser
+    from .lib import gen_libs
+    from .lib import gen_class
+    from .mysql_lib import mysql_libs
+    from .mysql_lib import mysql_class
+    from . import version
+
+except (ValueError, ImportError) as err:
+    import lib.arg_parser as arg_parser
+    import lib.gen_libs as gen_libs
+    import lib.gen_class as gen_class
+    import mysql_lib.mysql_libs as mysql_libs
+    import mysql_lib.mysql_class as mysql_class
+    import version
 
 __version__ = version.__version__
 
@@ -449,7 +460,7 @@ def main():
     args_array = arg_parser.arg_parse2(cmdline.argv, opt_val_list)
 
     # Get binary_log entry if -l option is not passed for certain options
-    if "-l" not in args_array and (args_array.viewkeys() & req_option):
+    if "-l" not in args_array and (set(args_array.keys()) & req_option):
         cfg = gen_libs.load_module(args_array["-c"], args_array["-d"])
 
         if hasattr(cfg, "binary_log") and cfg.binary_log:
