@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # Classification (U)
 
 """Program:  run_program.py
@@ -17,13 +16,7 @@
 # Standard
 import sys
 import os
-
-if sys.version_info < (2, 7):
-    import unittest2 as unittest
-else:
-    import unittest
-
-# Third-party
+import unittest
 import mock
 
 # Local
@@ -229,9 +222,9 @@ class UnitTest(unittest.TestCase):
         self.args_array2 = {"-c": "mysql_cfg", "-d": "config", "-R": True,
                             "-F": True}
         self.ord_prec_list = ["-F", "-K", "-M", "-A", "-S", "-R"]
-        self.func_dict = {"-F": flush_log_bkp, "-K": missing_log,
-                          "-M": bkp_log_miss, "-A": bkp_log_all,
-                          "-S": purge_log_day, "-R": purge_log_name}
+        self.func_names = {"-F": flush_log_bkp, "-K": missing_log,
+                           "-M": bkp_log_miss, "-A": bkp_log_all,
+                           "-S": purge_log_day, "-R": purge_log_name}
 
     @mock.patch("mysql_binlog.mysql_libs.create_instance")
     def test_connect_failure(self, mock_inst):
@@ -250,7 +243,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(mysql_binlog.run_program(
-                self.args_array, self.func_dict, self.ord_prec_list))
+                self.args_array, self.func_names, self.ord_prec_list))
 
     @mock.patch("mysql_binlog.mysql_libs.disconnect",
                 mock.Mock(return_value=True))
@@ -268,7 +261,7 @@ class UnitTest(unittest.TestCase):
         mock_inst.return_value = self.server
 
         self.assertFalse(mysql_binlog.run_program(
-            self.args_array, self.func_dict, self.ord_prec_list))
+            self.args_array, self.func_names, self.ord_prec_list))
 
     @mock.patch("mysql_binlog.mysql_libs.disconnect",
                 mock.Mock(return_value=True))
@@ -286,7 +279,7 @@ class UnitTest(unittest.TestCase):
         mock_inst.return_value = self.server
 
         self.assertFalse(mysql_binlog.run_program(
-            self.args_array2, self.func_dict, self.ord_prec_list))
+            self.args_array2, self.func_names, self.ord_prec_list))
 
     @mock.patch("mysql_binlog.mysql_libs.disconnect",
                 mock.Mock(return_value=True))
@@ -304,7 +297,7 @@ class UnitTest(unittest.TestCase):
         mock_inst.return_value = self.server
 
         self.assertFalse(mysql_binlog.run_program(
-            self.args_array, self.func_dict, self.ord_prec_list))
+            self.args_array, self.func_names, self.ord_prec_list))
 
 
 if __name__ == "__main__":
