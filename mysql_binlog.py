@@ -444,7 +444,6 @@ def main():
 
     """
 
-    cmdline = gen_libs.get_inst(sys)
     dir_chk_list = ["-d", "-l", "-o"]
     func_dict = {"-F": flush_log_bkp, "-K": missing_log, "-M": bkp_log_miss,
                  "-A": bkp_log_all, "-S": purge_log_day, "-R": purge_log_name}
@@ -457,7 +456,7 @@ def main():
     req_option = {"-F", "-M", "-A"}
 
     # Process argument list from command line.
-    args_array = arg_parser.arg_parse2(cmdline.argv, opt_val_list)
+    args_array = arg_parser.arg_parse2(sys.argv, opt_val_list)
 
     # Get binary_log entry if -l option is not passed for certain options
     if "-l" not in args_array and (set(args_array.keys()) & req_option):
@@ -473,8 +472,8 @@ def main():
        and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list):
 
         try:
-            prog_lock = gen_class.ProgramLock(cmdline.argv,
-                                              args_array.get("-y", ""))
+            prog_lock = gen_class.ProgramLock(
+                sys.argv, args_array.get("-y", ""))
             run_program(args_array, func_dict, ord_prec_list)
             del prog_lock
 
