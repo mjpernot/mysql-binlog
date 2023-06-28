@@ -7,6 +7,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 ## [3.2.0] - 2023-06-26
 - Upgraded python-lib to v2.10.1
 
+### Fixed
+- main: Fixed when programs fails if -l option is not passed and binary_log is set to none or not available.
+
 ### Changed
 - main: Removed gen_libs.get_inst call.
 

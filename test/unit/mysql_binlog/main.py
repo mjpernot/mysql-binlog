@@ -28,6 +28,136 @@ import version
 __version__ = version.__version__
 
 
+class ArgParser(object):
+
+    """Class:  ArgParser
+
+    Description:  Class stub holder for gen_class.ArgParser class.
+
+    Methods:
+        __init__
+        arg_cond_req
+        arg_dir_chk
+        arg_exist
+        arg_require
+### STOPPED HERE
+M        get_args_keys
+        arg_noreq_xor
+        get_val
+        insert_arg
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+
+        """
+
+        self.cmdline = None
+        self.args_array = dict()
+        self.opt_con_req = None
+        self.opt_con_req2 = True
+        self.opt_req = None
+        self.opt_req2 = True
+        self.dir_perms_chk = None
+        self.dir_perms_chk2 = True
+
+    def arg_cond_req(self, opt_con_req):
+
+        """Method:  arg_cond_req
+
+        Description:  Method stub holder for gen_class.ArgParser.arg_cond_req.
+
+        Arguments:
+
+        """
+
+        self.opt_con_req = opt_con_req
+
+        return self.opt_con_req2
+
+    def arg_dir_chk(self, dir_perms_chk):
+
+        """Method:  arg_dir_chk
+
+        Description:  Method stub holder for gen_class.ArgParser.arg_dir_chk.
+
+        Arguments:
+
+        """
+
+        self.dir_perms_chk = dir_perms_chk
+
+        return self.dir_perms_chk2
+
+    def arg_exist(self, arg):
+
+        """Method:  arg_exist
+
+        Description:  Method stub holder for gen_class.ArgParser.arg_exist.
+
+        Arguments:
+
+        """
+
+        return True if arg in self.args_array else False
+
+    def arg_require(self, opt_req):
+
+        """Method:  arg_require
+
+        Description:  Method stub holder for gen_class.ArgParser.arg_require.
+
+        Arguments:
+
+        """
+
+        self.opt_req = opt_req
+
+        return self.opt_req2
+
+    def get_args_keys(self):
+
+        """Method:  get_args_keys
+
+        Description:  Method stub holder for gen_class.ArgParser.get_args_keys.
+
+        Arguments:
+
+        """
+
+        return list(self.args_array.keys())
+
+    def get_val(self, skey, def_val):
+
+        """Method:  get_val
+
+        Description:  Method stub holder for gen_class.ArgParser.get_val.
+
+        Arguments:
+
+        """
+
+        return self.args_array.get(skey, def_val)
+
+    def insert_arg(self, arg_key, arg_val):
+
+        """Method:  insert_arg
+
+        Description:  Method stub holder for gen_class.ArgParser.insert_arg.
+
+        Arguments:
+
+        """
+
+        self.args_array[arg_key] = arg_val
+
+
 class Cfg(object):
 
     """Class:  Cfg

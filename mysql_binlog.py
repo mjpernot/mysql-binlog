@@ -116,7 +116,6 @@ import datetime
 
 # Local
 try:
-    from .lib import arg_parser
     from .lib import gen_libs
     from .lib import gen_class
     from .mysql_lib import mysql_libs
@@ -124,7 +123,6 @@ try:
     from . import version
 
 except (ValueError, ImportError) as err:
-    import lib.arg_parser as arg_parser
     import lib.gen_libs as gen_libs
     import lib.gen_class as gen_class
     import mysql_lib.mysql_libs as mysql_libs
@@ -430,10 +428,15 @@ def main():
         line arguments and values.
 
     Variables:
-        dir_chk_list -> contains options which will be directories
+#        dir_chk_list -> contains options which will be directories
+        dir_perms_chk -> contains directories and their octal permissions
+
         func_dict -> dictionary list for the function calls or other options
         opt_con_req_list -> contains the options that require other options
-        xor_noreq_list -> contains options that are XOR, but are not required
+
+#        xor_noreq_list -> contains options that are XOR, but are not required
+        xor_noreq -> contains options that are XOR, but are not required
+
         ord_prec_array -> holds options in order of precedence to be executed
         opt_req_list -> contains the options that are required for the program
         opt_val_list -> contains options which require values
@@ -444,42 +447,68 @@ def main():
 
     """
 
-    dir_chk_list = ["-d", "-l", "-o"]
-    func_dict = {"-F": flush_log_bkp, "-K": missing_log, "-M": bkp_log_miss,
-                 "-A": bkp_log_all, "-S": purge_log_day, "-R": purge_log_name}
-    opt_con_req_list = {"-F": ["-o", "-l"], "-M": ["-o", "-l"],
-                        "-A": ["-o", "-l"], "-K": ["-o"]}
-    xor_noreq_list = {"-S": "-R", "-M": "-A"}
+#    dir_chk_list = ["-d", "-l", "-o"]
+    dir_perms_chk = {"-d": 5, "-l": 5, "-o": 7}
+
+    func_dict = {
+        "-F": flush_log_bkp, "-K": missing_log, "-M": bkp_log_miss,
+        "-A": bkp_log_all, "-S": purge_log_day, "-R": purge_log_name}
+    opt_con_req_list = {
+        "-F": ["-o", "-l"], "-M": ["-o", "-l"], "-A": ["-o", "-l"],
+        "-K": ["-o"]}
+
+#    xor_noreq_list = {"-S": "-R", "-M": "-A"}
+    xor_noreq = {"-S": "-R", "-M": "-A"}
+
     ord_prec_list = ["-F", "-K", "-M", "-A", "-S", "-R"]
     opt_req_list = ["-c", "-d"]
     opt_val_list = ["-c", "-d", "-l", "-o", "-R", "-S", "-y"]
     req_option = {"-F", "-M", "-A"}
 
     # Process argument list from command line.
-    args_array = arg_parser.arg_parse2(sys.argv, opt_val_list)
+#    args_array = arg_parser.arg_parse2(sys.argv, opt_val_list)
+    args = gen_class.ArgParser(sys.argv, opt_val=opt_val_list, do_parse=True)
 
     # Get binary_log entry if -l option is not passed for certain options
-    if "-l" not in args_array and (set(args_array.keys()) & req_option):
-        cfg = gen_libs.load_module(args_array["-c"], args_array["-d"])
+#    if "-l" not in args_array and (set(args_array.keys()) & req_option):
+    if not args.arg_exist("-l") and (set(args.get_args_keys()) & req_option):
+#        cfg = gen_libs.load_module(args_array["-c"], args_array["-d"])
+        cfg = gen_libs.load_module(args.get_val("-c"), args.get_val("-d"))
 
         if hasattr(cfg, "binary_log") and cfg.binary_log:
-            args_array["-l"] = cfg.binary_log
+#            args_array["-l"] = cfg.binary_log
+            args.insert_arg("-l", cfg.binary_log)
 
-    if not gen_libs.help_func(args_array, __version__, help_message) \
-       and not arg_parser.arg_require(args_array, opt_req_list) \
-       and arg_parser.arg_noreq_xor(args_array, xor_noreq_list) \
-       and arg_parser.arg_cond_req(args_array, opt_con_req_list) \
-       and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list):
+        else:
+            print("ERROR: Require either -l option or binary_log filled in.")
+            return
+
+#    if not gen_libs.help_func(args_array, __version__, help_message) \
+#       and not arg_parser.arg_require(args_array, opt_req_list) \
+#       and arg_parser.arg_noreq_xor(args_array, xor_noreq_list) \
+#       and arg_parser.arg_cond_req(args_array, opt_con_req_list) \
+#       and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list):
+    if not gen_libs.help_func(args, __version__, help_message)  \
+       and args.arg_require(opt_req=opt_req_list)               \
+       and args.arg_noreq_xor(xor_noreq=xor_noreq)              \
+       and args.arg_cond_req(opt_con_req=opt_con_req_list)      \
+       and args.arg_dir_chk(dir_perms_chk=dir_perms_chk):
 
         try:
+#            prog_lock = gen_class.ProgramLock(
+#                sys.argv, args_array.get("-y", ""))
+#            run_program(args_array, func_dict, ord_prec_list)
             prog_lock = gen_class.ProgramLock(
-                sys.argv, args_array.get("-y", ""))
-            run_program(args_array, func_dict, ord_prec_list)
+                sys.argv, args.get_val("-y", def_val=""))
+            run_program(args, func_dict, ord_prec_list)
+
             del prog_lock
 
         except gen_class.SingleInstanceException:
+#            print("WARNING:  lock in place for mysql_binlog with id of: %s"
+#                  % (args_array.get("-y", "")))
             print("WARNING:  lock in place for mysql_binlog with id of: %s"
-                  % (args_array.get("-y", "")))
+                  % (args.get_val("-y", def_val="")))
 
 
 if __name__ == "__main__":
