@@ -27,6 +27,44 @@ import version
 __version__ = version.__version__
 
 
+class ArgParser(object):
+
+    """Class:  ArgParser
+
+    Description:  Class stub holder for gen_class.ArgParser class.
+
+    Methods:
+        __init__
+        get_val
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+
+        """
+
+        self.cmdline = None
+        self.args_array = dict()
+
+    def get_val(self, skey, def_val=None):
+
+        """Method:  get_val
+
+        Description:  Method stub holder for gen_class.ArgParser.get_val.
+
+        Arguments:
+
+        """
+
+        return self.args_array.get(skey, def_val)
+
+
 class Server(object):
 
     """Class:  Server
@@ -88,7 +126,8 @@ class UnitTest(unittest.TestCase):
         """
 
         self.server = Server()
-        self.args_array = {"-o": True}
+        self.args = ArgParser()
+        self.args.args_array = {"-o": True}
         self.bkp_logs = ["Log1", "Log2"]
         self.bkp_logs2 = ["Log1"]
         self.bkp_logs3 = []
@@ -111,8 +150,8 @@ class UnitTest(unittest.TestCase):
         mock_fetch.return_value = self.log_list
         mock_bkp.return_value = self.bkp_logs3
 
-        self.assertEqual(mysql_binlog.fetch_miss_logs(
-            self.args_array, self.server), self.results2)
+        self.assertEqual(
+            mysql_binlog.fetch_miss_logs(self.args, self.server), self.results2)
 
     @mock.patch("mysql_binlog.fetch_bkp_logs")
     @mock.patch("mysql_binlog.fetch_all_logs")
@@ -129,8 +168,8 @@ class UnitTest(unittest.TestCase):
         mock_fetch.return_value = self.log_list
         mock_bkp.return_value = self.bkp_logs2
 
-        self.assertEqual(mysql_binlog.fetch_miss_logs(
-            self.args_array, self.server), self.results)
+        self.assertEqual(
+            mysql_binlog.fetch_miss_logs(self.args, self.server), self.results)
 
     @mock.patch("mysql_binlog.fetch_bkp_logs")
     @mock.patch("mysql_binlog.fetch_all_logs")
@@ -147,8 +186,8 @@ class UnitTest(unittest.TestCase):
         mock_fetch.return_value = self.log_list
         mock_bkp.return_value = self.bkp_logs
 
-        self.assertEqual(mysql_binlog.fetch_miss_logs(
-            self.args_array, self.server), [])
+        self.assertEqual(
+            mysql_binlog.fetch_miss_logs(self.args, self.server), [])
 
 
 if __name__ == "__main__":

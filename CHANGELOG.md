@@ -6,11 +6,13 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [3.2.0] - 2023-06-26
 - Upgraded python-lib to v2.10.1
+- Replace arg_parser.arg_parse2 with gen_class.ArgParser.
 
 ### Fixed
 - main: Fixed when programs fails if -l option is not passed and binary_log is set to none or not available.
 
 ### Changed
+- Multiple functions: Replaced the arg_parser code with gen_class.ArgParser code.
 - main: Removed gen_libs.get_inst call.
 
 
