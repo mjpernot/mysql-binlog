@@ -116,7 +116,6 @@ import datetime
 
 # Local
 try:
-    from .lib import arg_parser
     from .lib import gen_libs
     from .lib import gen_class
     from .mysql_lib import mysql_libs
@@ -124,7 +123,6 @@ try:
     from . import version
 
 except (ValueError, ImportError) as err:
-    import lib.arg_parser as arg_parser
     import lib.gen_libs as gen_libs
     import lib.gen_class as gen_class
     import mysql_lib.mysql_libs as mysql_libs
@@ -148,43 +146,41 @@ def help_message():
     print(__doc__)
 
 
-def cp_zip_file(args_array, fname):
+def cp_zip_file(args, fname):
 
     """Function:  cp_zip_file
 
     Description:  Copies file to directory and compresses if requested.
 
     Arguments:
-        (input) args_array -> Array of command line options and values.
-        (input) fname -> File name to be copied and zipped.
+        (input) args -> ArgParser class instance
+        (input) fname -> File name to be copied and zipped
 
     """
 
-    args_array = dict(args_array)
-    gen_libs.cp_file2(fname, args_array["-l"], args_array["-o"])
+    gen_libs.cp_file2(fname, args.get_val("-l"), args.get_val("-o"))
 
-    if "-z" in args_array:
-        gen_libs.compress(os.path.join(args_array["-o"], fname))
+    if args.arg_exist("-z"):
+        gen_libs.compress(os.path.join(args.get_val("-o"), fname))
 
 
-def flush_log_bkp(args_array, server):
+def flush_log_bkp(args, server):
 
     """Function:  flush_log_bkp
 
     Description:  Flush the binary log and backup it up.
 
     Arguments:
-        (input) args_array -> Array of command line options and values.
-        (input) server -> Database server instance.
+        (input) args -> ArgParser class instance
+        (input) server -> Database server instance
 
     """
 
-    args_array = dict(args_array)
     cur_log = server.fetch_log()
     server.flush_logs()
 
     if cur_log != server.fetch_log():
-        cp_zip_file(args_array, cur_log)
+        cp_zip_file(args, cur_log)
 
     else:
         print("Warning: Flush of binary log: %s did not complete." % (cur_log))
@@ -198,8 +194,8 @@ def fetch_bkp_logs(dir_path):
         directory, but removes any .gz extension from the log name.
 
     Arguments:
-        (input) dir_path -> Directory name.
-        (output) fnames -> List of binary log file names.
+        (input) dir_path -> Directory name
+        (output) fnames -> List of binary log file names
 
     """
 
@@ -224,8 +220,8 @@ def fetch_all_logs(server):
         a list of binary log names.
 
     Arguments:
-        (input) server -> Database server instance.
-        (output) mysql_logs -> A list of binary log file names.
+        (input) server -> Database server instance
+        (output) mysql_logs -> A list of binary log file names
 
     """
 
@@ -237,7 +233,7 @@ def fetch_all_logs(server):
     return mysql_logs
 
 
-def fetch_miss_logs(args_array, server):
+def fetch_miss_logs(args, server):
 
     """Function:  fetch_miss_logs
 
@@ -245,25 +241,24 @@ def fetch_miss_logs(args_array, server):
         logs.
 
     Arguments:
-        (input) args_array -> Array of command line options and values.
-        (input) server -> Database server instance.
-        (output) List of missing MySQL binary logs.
+        (input) args -> ArgParser class instance
+        (input) server -> Database server instance
+        (output) List of missing MySQL binary logs
 
     """
 
-    args_array = dict(args_array)
     mysql_logs = fetch_all_logs(server)
 
     # Remove current binary log from list.
     mysql_logs.remove(server.fetch_log())
 
-    bkp_logs = fetch_bkp_logs(args_array["-o"])
+    bkp_logs = fetch_bkp_logs(args.get_val("-o"))
 
     # Return files missing from backup directory.
     return gen_libs.is_missing_lists(mysql_logs, bkp_logs)
 
 
-def missing_log(args_array, server):
+def missing_log(args, server):
 
     """Function:  missing_log
 
@@ -271,13 +266,12 @@ def missing_log(args_array, server):
         directory and displays any missing logs.
 
     Arguments:
-        (input) args_array -> Array of command line options and values.
-        (input) server -> Database server instance.
+        (input) args -> ArgParser class instance
+        (input) server -> Database server instance
 
     """
 
-    args_array = dict(args_array)
-    miss_files = fetch_miss_logs(args_array, server)
+    miss_files = fetch_miss_logs(args, server)
 
     if miss_files:
         print("Missing files:")
@@ -286,26 +280,25 @@ def missing_log(args_array, server):
             print("\t{0}".format(item))
 
 
-def bkp_log_miss(args_array, server):
+def bkp_log_miss(args, server):
 
     """Function:  bkp_log_miss
 
     Description:  Copies any missing binary logs to the backup directory.
 
     Arguments:
-        (input) args_array -> Array of command line options and values.
-        (input) server -> Database server instance.
+        (input) args -> ArgParser class instance
+        (input) server -> Database server instance
 
     """
 
-    args_array = dict(args_array)
-    miss_files = fetch_miss_logs(args_array, server)
+    miss_files = fetch_miss_logs(args, server)
 
     for item in miss_files:
-        cp_zip_file(args_array, item)
+        cp_zip_file(args, item)
 
 
-def bkp_log_all(args_array, server):
+def bkp_log_all(args, server):
 
     """Function:  bkp_log_all
 
@@ -313,35 +306,34 @@ def bkp_log_all(args_array, server):
         directory.  Copies any existing binary logs to another name.
 
     Arguments:
-        (input) args_array -> Array of command line options and values.
-        (input) server -> Database server instance.
+        (input) args -> ArgParser class instance
+        (input) server -> Database server instance
 
     """
 
-    args_array = dict(args_array)
     mysql_logs = fetch_all_logs(server)
 
     # Remove current binary log file from list.
     mysql_logs.remove(server.fetch_log())
 
     # Get file names in backup directory.
-    bkp_logs = fetch_bkp_logs(args_array["-o"])
+    bkp_logs = fetch_bkp_logs(args.get_val("-o"))
 
     for item in mysql_logs:
 
         if item in bkp_logs:
             fname = item
 
-            if not os.path.isfile(os.path.join(args_array["-o"], item)):
+            if not os.path.isfile(os.path.join(args.get_val("-o"), item)):
                 fname = item + ".gz"
 
             ext = time.strftime("%Y%m%d_%I%M")
-            gen_libs.rename_file(fname, fname + "." + ext, args_array["-o"])
+            gen_libs.rename_file(fname, fname + "." + ext, args.get_val("-o"))
 
-        cp_zip_file(args_array, item)
+        cp_zip_file(args, item)
 
 
-def purge_log_day(args_array, server):
+def purge_log_day(args, server):
 
     """Function:  purge_log_day
 
@@ -349,21 +341,20 @@ def purge_log_day(args_array, server):
         minus a number of days.
 
     Arguments:
-        (input) args_array -> Array of command line options and values.
-        (input) server -> Database server instance.
+        (input) args -> ArgParser class instance
+        (input) server -> Database server instance
 
     """
 
-    args_array = dict(args_array)
     pre_dtg = datetime.datetime.now() - \
-        datetime.timedelta(days=int(args_array["-S"]))
+        datetime.timedelta(days=int(args.get_val("-S")))
     prg_dtg = datetime.datetime.strftime(pre_dtg, "%Y-%m-%d %H:%M:%S")
 
     # Purge logs using MySQL 'before' option.
     mysql_libs.purge_bin_logs(server, "before", prg_dtg)
 
 
-def purge_log_name(args_array, server):
+def purge_log_name(args, server):
 
     """Function:  purge_log_name
 
@@ -371,41 +362,39 @@ def purge_log_name(args_array, server):
         name.
 
     Arguments:
-        (input) args_array -> Array of command line options and values.
-        (input) server -> Database server instance.
+        (input) args -> ArgParser class instance
+        (input) server -> Database server instance
 
     """
 
-    args_array = dict(args_array)
     mysql_logs = fetch_all_logs(server)
 
-    if args_array["-R"] in mysql_logs:
+    if args.get_val("-R") in mysql_logs:
 
         # Purge logs using MySQL 'to' option.
-        mysql_libs.purge_bin_logs(server, "to", args_array["-R"])
+        mysql_libs.purge_bin_logs(server, "to", args.get_val("-R"))
 
     else:
-        print("Error:  {0} log is not present.".format(args_array["-R"]))
+        print("Error:  {0} log is not present.".format(args.get_val("-R")))
 
 
-def run_program(args_array, func_dict, ord_prec_list):
+def run_program(args, func_dict, ord_prec_list):
 
     """Function:  run_program
 
     Description:  Creates class instance(s) and controls flow of the program.
 
     Arguments:
-        (input) args_array -> Dict of command line options and values.
-        (input) func_dict -> Dictionary list of functions and options.
-        (input) ord_prec_list -> Order of precedence of the arguments.
+        (input) args -> ArgParser class instance
+        (input) func_dict -> Dictionary list of functions and options
+        (input) ord_prec_list -> Order of precedence of the arguments
 
     """
 
-    args_array = dict(args_array)
     func_dict = dict(func_dict)
     ord_prec_list = list(ord_prec_list)
-    server = mysql_libs.create_instance(args_array["-c"], args_array["-d"],
-                                        mysql_class.Server)
+    server = mysql_libs.create_instance(
+        args.get_val("-c"), args.get_val("-d"), mysql_class.Server)
     server.connect(silent=True)
 
     if server.conn_msg:
@@ -416,8 +405,8 @@ def run_program(args_array, func_dict, ord_prec_list):
         # Execute functions based on order of precedence.
         for item in ord_prec_list:
 
-            if item in args_array:
-                func_dict[item](args_array, server)
+            if args.arg_exist(item):
+                func_dict[item](args, server)
 
         mysql_libs.disconnect([server])
 
@@ -430,10 +419,10 @@ def main():
         line arguments and values.
 
     Variables:
-        dir_chk_list -> contains options which will be directories
+        dir_perms_chk -> contains directories and their octal permissions
         func_dict -> dictionary list for the function calls or other options
         opt_con_req_list -> contains the options that require other options
-        xor_noreq_list -> contains options that are XOR, but are not required
+        xor_noreq -> contains options that are XOR, but are not required
         ord_prec_array -> holds options in order of precedence to be executed
         opt_req_list -> contains the options that are required for the program
         opt_val_list -> contains options which require values
@@ -444,43 +433,49 @@ def main():
 
     """
 
-    cmdline = gen_libs.get_inst(sys)
-    dir_chk_list = ["-d", "-l", "-o"]
-    func_dict = {"-F": flush_log_bkp, "-K": missing_log, "-M": bkp_log_miss,
-                 "-A": bkp_log_all, "-S": purge_log_day, "-R": purge_log_name}
-    opt_con_req_list = {"-F": ["-o", "-l"], "-M": ["-o", "-l"],
-                        "-A": ["-o", "-l"], "-K": ["-o"]}
-    xor_noreq_list = {"-S": "-R", "-M": "-A"}
+    dir_perms_chk = {"-d": 5, "-l": 5, "-o": 7}
+    func_dict = {
+        "-F": flush_log_bkp, "-K": missing_log, "-M": bkp_log_miss,
+        "-A": bkp_log_all, "-S": purge_log_day, "-R": purge_log_name}
+    opt_con_req_list = {
+        "-F": ["-o", "-l"], "-M": ["-o", "-l"], "-A": ["-o", "-l"],
+        "-K": ["-o"]}
+    xor_noreq = {"-S": "-R", "-M": "-A"}
     ord_prec_list = ["-F", "-K", "-M", "-A", "-S", "-R"]
     opt_req_list = ["-c", "-d"]
     opt_val_list = ["-c", "-d", "-l", "-o", "-R", "-S", "-y"]
     req_option = {"-F", "-M", "-A"}
 
     # Process argument list from command line.
-    args_array = arg_parser.arg_parse2(cmdline.argv, opt_val_list)
+    args = gen_class.ArgParser(sys.argv, opt_val=opt_val_list, do_parse=True)
 
     # Get binary_log entry if -l option is not passed for certain options
-    if "-l" not in args_array and (set(args_array.keys()) & req_option):
-        cfg = gen_libs.load_module(args_array["-c"], args_array["-d"])
+    if not args.arg_exist("-l") and (set(args.get_args_keys()) & req_option):
+        cfg = gen_libs.load_module(args.get_val("-c"), args.get_val("-d"))
 
         if hasattr(cfg, "binary_log") and cfg.binary_log:
-            args_array["-l"] = cfg.binary_log
+            args.insert_arg("-l", cfg.binary_log)
 
-    if not gen_libs.help_func(args_array, __version__, help_message) \
-       and not arg_parser.arg_require(args_array, opt_req_list) \
-       and arg_parser.arg_noreq_xor(args_array, xor_noreq_list) \
-       and arg_parser.arg_cond_req(args_array, opt_con_req_list) \
-       and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list):
+        else:
+            print("ERROR: Require either -l option or binary_log filled in.")
+            return
+
+    if not gen_libs.help_func(args, __version__, help_message)  \
+       and args.arg_require(opt_req=opt_req_list)               \
+       and args.arg_noreq_xor(xor_noreq=xor_noreq)              \
+       and args.arg_cond_req(opt_con_req=opt_con_req_list)      \
+       and args.arg_dir_chk(dir_perms_chk=dir_perms_chk):
 
         try:
-            prog_lock = gen_class.ProgramLock(cmdline.argv,
-                                              args_array.get("-y", ""))
-            run_program(args_array, func_dict, ord_prec_list)
+            prog_lock = gen_class.ProgramLock(
+                sys.argv, args.get_val("-y", def_val=""))
+            run_program(args, func_dict, ord_prec_list)
+
             del prog_lock
 
         except gen_class.SingleInstanceException:
             print("WARNING:  lock in place for mysql_binlog with id of: %s"
-                  % (args_array.get("-y", "")))
+                  % (args.get_val("-y", def_val="")))
 
 
 if __name__ == "__main__":

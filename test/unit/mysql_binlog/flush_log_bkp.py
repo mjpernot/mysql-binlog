@@ -28,6 +28,31 @@ import version
 __version__ = version.__version__
 
 
+class ArgParser(object):
+
+    """Class:  ArgParser
+
+    Description:  Class stub holder for gen_class.ArgParser class.
+
+    Methods:
+        __init__
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+
+        """
+
+        self.cmdline = None
+        self.args_array = dict()
+
+
 class Server(object):
 
     """Class:  Server
@@ -108,7 +133,8 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.args_array = {"-l": True, "-o": "./"}
+        self.args = ArgParser()
+        self.args.args_array = {"-l": True, "-o": "./"}
         self.server = Server()
         self.server2 = Server(False)
 
@@ -123,8 +149,8 @@ class UnitTest(unittest.TestCase):
         """
 
         with gen_libs.no_std_out():
-            self.assertFalse(mysql_binlog.flush_log_bkp(self.args_array,
-                                                        self.server2))
+            self.assertFalse(
+                mysql_binlog.flush_log_bkp(self.args, self.server2))
 
     @mock.patch("mysql_binlog.cp_zip_file", mock.Mock(return_value=True))
     def test_flush_successful(self):
@@ -137,8 +163,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(mysql_binlog.flush_log_bkp(self.args_array,
-                                                    self.server))
+        self.assertFalse(mysql_binlog.flush_log_bkp(self.args, self.server))
 
 
 if __name__ == "__main__":

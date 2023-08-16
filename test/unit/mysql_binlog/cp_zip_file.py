@@ -27,6 +27,57 @@ import version
 __version__ = version.__version__
 
 
+class ArgParser(object):
+
+    """Class:  ArgParser
+
+    Description:  Class stub holder for gen_class.ArgParser class.
+
+    Methods:
+        __init__
+        get_val
+        arg_exist
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+
+        """
+
+        self.cmdline = None
+        self.args_array = dict()
+
+    def get_val(self, skey, def_val=None):
+
+        """Method:  get_val
+
+        Description:  Method stub holder for gen_class.ArgParser.get_val.
+
+        Arguments:
+
+        """
+
+        return self.args_array.get(skey, def_val)
+
+    def arg_exist(self, arg):
+
+        """Method:  arg_exist
+
+        Description:  Method stub holder for gen_class.ArgParser.arg_exist.
+
+        Arguments:
+
+        """
+
+        return True if arg in self.args_array else False
+
+
 class UnitTest(unittest.TestCase):
 
     """Class:  UnitTest
@@ -50,8 +101,10 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.args_array = {"-l": True, "-o": "./"}
-        self.args_array2 = {"-l": True, "-o": "./", "-z": True}
+        self.args = ArgParser()
+        self.args2 = ArgParser()
+        self.args.args_array = {"-l": True, "-o": "./"}
+        self.args2.args_array = {"-l": True, "-o": "./", "-z": True}
         self.fname = "FileName"
 
     @mock.patch("mysql_binlog.gen_libs.compress",
@@ -68,8 +121,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(mysql_binlog.cp_zip_file(self.args_array2,
-                                                  self.fname))
+        self.assertFalse(mysql_binlog.cp_zip_file(self.args2, self.fname))
 
     @mock.patch("mysql_binlog.gen_libs.cp_file2",
                 mock.Mock(return_value=True))
@@ -83,7 +135,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(mysql_binlog.cp_zip_file(self.args_array, self.fname))
+        self.assertFalse(mysql_binlog.cp_zip_file(self.args, self.fname))
 
 
 if __name__ == "__main__":

@@ -148,6 +148,57 @@ def purge_log_name(args_array, server):
     return status
 
 
+class ArgParser(object):
+
+    """Class:  ArgParser
+
+    Description:  Class stub holder for gen_class.ArgParser class.
+
+    Methods:
+        __init__
+        get_val
+        arg_exist
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+
+        """
+
+        self.cmdline = None
+        self.args_array = dict()
+
+    def get_val(self, skey, def_val=None):
+
+        """Method:  get_val
+
+        Description:  Method stub holder for gen_class.ArgParser.get_val.
+
+        Arguments:
+
+        """
+
+        return self.args_array.get(skey, def_val)
+
+    def arg_exist(self, arg):
+
+        """Method:  arg_exist
+
+        Description:  Method stub holder for gen_class.ArgParser.arg_exist.
+
+        Arguments:
+
+        """
+
+        return True if arg in self.args_array else False
+
+
 class Server(object):
 
     """Class:  Server
@@ -218,9 +269,11 @@ class UnitTest(unittest.TestCase):
         """
 
         self.server = Server()
-        self.args_array = {"-c": "mysql_cfg", "-d": "config", "-F": True}
-        self.args_array2 = {"-c": "mysql_cfg", "-d": "config", "-R": True,
-                            "-F": True}
+        self.args = ArgParser()
+        self.args2 = ArgParser()
+        self.args.args_array = {"-c": "mysql_cfg", "-d": "config", "-F": True}
+        self.args2.args_array = {
+            "-c": "mysql_cfg", "-d": "config", "-R": True, "-F": True}
         self.ord_prec_list = ["-F", "-K", "-M", "-A", "-S", "-R"]
         self.func_names = {"-F": flush_log_bkp, "-K": missing_log,
                            "-M": bkp_log_miss, "-A": bkp_log_all,
@@ -243,7 +296,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(mysql_binlog.run_program(
-                self.args_array, self.func_names, self.ord_prec_list))
+                self.args, self.func_names, self.ord_prec_list))
 
     @mock.patch("mysql_binlog.mysql_libs.disconnect",
                 mock.Mock(return_value=True))
@@ -261,7 +314,7 @@ class UnitTest(unittest.TestCase):
         mock_inst.return_value = self.server
 
         self.assertFalse(mysql_binlog.run_program(
-            self.args_array, self.func_names, self.ord_prec_list))
+            self.args, self.func_names, self.ord_prec_list))
 
     @mock.patch("mysql_binlog.mysql_libs.disconnect",
                 mock.Mock(return_value=True))
@@ -279,7 +332,7 @@ class UnitTest(unittest.TestCase):
         mock_inst.return_value = self.server
 
         self.assertFalse(mysql_binlog.run_program(
-            self.args_array2, self.func_names, self.ord_prec_list))
+            self.args2, self.func_names, self.ord_prec_list))
 
     @mock.patch("mysql_binlog.mysql_libs.disconnect",
                 mock.Mock(return_value=True))
@@ -297,7 +350,7 @@ class UnitTest(unittest.TestCase):
         mock_inst.return_value = self.server
 
         self.assertFalse(mysql_binlog.run_program(
-            self.args_array, self.func_names, self.ord_prec_list))
+            self.args, self.func_names, self.ord_prec_list))
 
 
 if __name__ == "__main__":
