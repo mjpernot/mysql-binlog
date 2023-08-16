@@ -151,7 +151,8 @@ class UnitTest(unittest.TestCase):
         mock_bkp.return_value = self.bkp_logs3
 
         self.assertEqual(
-            mysql_binlog.fetch_miss_logs(self.args, self.server), self.results2)
+            mysql_binlog.fetch_miss_logs(
+                self.args, self.server), self.results2)
 
     @mock.patch("mysql_binlog.fetch_bkp_logs")
     @mock.patch("mysql_binlog.fetch_all_logs")

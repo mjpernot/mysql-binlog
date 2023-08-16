@@ -137,7 +137,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(
-                mysql_binlog.purge_log_name(self.args, self.server))
+                mysql_binlog.purge_log_name(self.args2, self.server))
 
     @mock.patch("mysql_binlog.mysql_libs.purge_bin_logs",
                 mock.Mock(return_value=True))
