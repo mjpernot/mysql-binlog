@@ -28,6 +28,151 @@ import version
 __version__ = version.__version__
 
 
+class ArgParser(object):
+
+    """Class:  ArgParser
+
+    Description:  Class stub holder for gen_class.ArgParser class.
+
+    Methods:
+        __init__
+        arg_cond_req
+        arg_dir_chk
+        arg_exist
+        arg_require
+        get_args_keys
+        arg_noreq_xor
+        get_val
+        insert_arg
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+
+        """
+
+        self.cmdline = None
+        self.args_array = dict()
+        self.opt_con_req = None
+        self.opt_con_req2 = True
+        self.opt_req = None
+        self.opt_req2 = True
+        self.dir_perms_chk = None
+        self.dir_perms_chk2 = True
+        self.xor_noreq = None
+        self.xor_noreq2 = True
+
+    def arg_cond_req(self, opt_con_req):
+
+        """Method:  arg_cond_req
+
+        Description:  Method stub holder for gen_class.ArgParser.arg_cond_req.
+
+        Arguments:
+
+        """
+
+        self.opt_con_req = opt_con_req
+
+        return self.opt_con_req2
+
+    def arg_dir_chk(self, dir_perms_chk):
+
+        """Method:  arg_dir_chk
+
+        Description:  Method stub holder for gen_class.ArgParser.arg_dir_chk.
+
+        Arguments:
+
+        """
+
+        self.dir_perms_chk = dir_perms_chk
+
+        return self.dir_perms_chk2
+
+    def arg_exist(self, arg):
+
+        """Method:  arg_exist
+
+        Description:  Method stub holder for gen_class.ArgParser.arg_exist.
+
+        Arguments:
+
+        """
+
+        return True if arg in self.args_array else False
+
+    def arg_require(self, opt_req):
+
+        """Method:  arg_require
+
+        Description:  Method stub holder for gen_class.ArgParser.arg_require.
+
+        Arguments:
+
+        """
+
+        self.opt_req = opt_req
+
+        return self.opt_req2
+
+    def get_args_keys(self):
+
+        """Method:  get_args_keys
+
+        Description:  Method stub holder for gen_class.ArgParser.get_args_keys.
+
+        Arguments:
+
+        """
+
+        return list(self.args_array.keys())
+
+    def arg_noreq_xor(self, xor_noreq):
+
+        """Method:  arg_noreq_xor
+
+        Description:  Method stub holder for gen_class.ArgParser.arg_noreq_xor.
+
+        Arguments:
+
+        """
+
+        self.xor_noreq = xor_noreq
+
+        return self.xor_noreq2
+
+    def get_val(self, skey, def_val=None):
+
+        """Method:  get_val
+
+        Description:  Method stub holder for gen_class.ArgParser.get_val.
+
+        Arguments:
+
+        """
+
+        return self.args_array.get(skey, def_val)
+
+    def insert_arg(self, arg_key, arg_val):
+
+        """Method:  insert_arg
+
+        Description:  Method stub holder for gen_class.ArgParser.insert_arg.
+
+        Arguments:
+
+        """
+
+        self.args_array[arg_key] = arg_val
+
+
 class Cfg(object):
 
     """Class:  Cfg
@@ -79,30 +224,6 @@ class ProgramLock(object):
         self.flavor = flavor
 
 
-class CmdLine(object):
-
-    """Class:  CmdLine
-
-    Description:  Class which is a representation of a command line.
-
-    Methods:
-        __init__
-
-    """
-
-    def __init__(self):
-
-        """Method:  __init__
-
-        Description:  Initialization instance of the class.
-
-        Arguments:
-
-        """
-
-        self.argv = ["Program", "-c", "CfgFile", "-d", "CfgDir"]
-
-
 class UnitTest(unittest.TestCase):
 
     """Class:  UnitTest
@@ -118,14 +239,14 @@ class UnitTest(unittest.TestCase):
         test_l_opt_req_options
         test_help_true
         test_help_false
-        test_arg_req_true
         test_arg_req_false
+        test_arg_req_true
         test_arg_noreq_xor_false
         test_arg_noreq_xor_true
         test_arg_cond_req_false
         test_arg_cond_req_true
-        test_arg_dir_chk_crt_true
         test_arg_dir_chk_crt_false
+        test_arg_dir_chk_crt_true
         test_run_program
         test_programlock_id
         test_programlock_fail
@@ -142,22 +263,25 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.cmd_line = CmdLine()
-        self.args_array = {"-c": "CfgFile", "-d": "CfgDir"}
-        self.args_array2 = {"-c": "CfgFile", "-d": "CfgDir", "-l": "/path"}
-        self.args_array3 = {"-c": "CfgFile", "-d": "CfgDir", "-M": True}
+        self.args = ArgParser()
+        self.args2 = ArgParser()
+        self.args3 = ArgParser()
+        self.args.args_array = {"-c": "CfgFile", "-d": "CfgDir"}
+        self.args2.args_array = {
+            "-c": "CfgFile", "-d": "CfgDir", "-l": "/path"}
+        self.args3.args_array = {"-c": "CfgFile", "-d": "CfgDir", "-M": True}
         self.proglock = ProgramLock(["cmdline"], "FlavorID")
         self.cfg = Cfg()
 
     @mock.patch("mysql_binlog.gen_libs.load_module")
-    @mock.patch("mysql_binlog.gen_libs.get_inst")
     @mock.patch("mysql_binlog.gen_libs.help_func")
-    @mock.patch("mysql_binlog.arg_parser.arg_parse2")
-    def test_binary_log2(self, mock_arg, mock_help, mock_inst, mock_cfg):
+    @mock.patch("mysql_binlog.gen_class.ArgParser")
+    def test_binary_log2(self, mock_arg, mock_help, mock_cfg):
 
         """Function:  test_binary_log2
 
-        Description:  Test with test_binary_log not set.
+        Description:  Test with test_binary_log not set and no -l option
+            passed.
 
         Arguments:
 
@@ -165,18 +289,17 @@ class UnitTest(unittest.TestCase):
 
         self.cfg.binary_log = None
 
-        mock_arg.return_value = self.args_array3
+        mock_arg.return_value = self.args3
         mock_help.return_value = True
-        mock_inst.return_value = self.cmd_line
         mock_cfg.return_value = self.cfg
 
-        self.assertFalse(mysql_binlog.main())
+        with gen_libs.no_std_out():
+            self.assertFalse(mysql_binlog.main())
 
     @mock.patch("mysql_binlog.gen_libs.load_module")
-    @mock.patch("mysql_binlog.gen_libs.get_inst")
     @mock.patch("mysql_binlog.gen_libs.help_func")
-    @mock.patch("mysql_binlog.arg_parser.arg_parse2")
-    def test_binary_log(self, mock_arg, mock_help, mock_inst, mock_cfg):
+    @mock.patch("mysql_binlog.gen_class.ArgParser")
+    def test_binary_log(self, mock_arg, mock_help, mock_cfg):
 
         """Function:  test_binary_log
 
@@ -186,19 +309,16 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_arg.return_value = self.args_array3
+        mock_arg.return_value = self.args3
         mock_help.return_value = True
-        mock_inst.return_value = self.cmd_line
         mock_cfg.return_value = self.cfg
 
         self.assertFalse(mysql_binlog.main())
 
     @mock.patch("mysql_binlog.gen_libs.load_module")
-    @mock.patch("mysql_binlog.gen_libs.get_inst")
     @mock.patch("mysql_binlog.gen_libs.help_func")
-    @mock.patch("mysql_binlog.arg_parser.arg_parse2")
-    def test_l_opt_req_options3(self, mock_arg, mock_help, mock_inst,
-                                mock_cfg):
+    @mock.patch("mysql_binlog.gen_class.ArgParser")
+    def test_l_opt_req_options3(self, mock_arg, mock_help, mock_cfg):
 
         """Function:  test_l_opt_req_options3
 
@@ -208,17 +328,15 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_arg.return_value = self.args_array3
+        mock_arg.return_value = self.args3
         mock_help.return_value = True
-        mock_inst.return_value = self.cmd_line
         mock_cfg.return_value = self.cfg
 
         self.assertFalse(mysql_binlog.main())
 
-    @mock.patch("mysql_binlog.gen_libs.get_inst")
     @mock.patch("mysql_binlog.gen_libs.help_func")
-    @mock.patch("mysql_binlog.arg_parser.arg_parse2")
-    def test_l_opt_req_options2(self, mock_arg, mock_help, mock_inst):
+    @mock.patch("mysql_binlog.gen_class.ArgParser")
+    def test_l_opt_req_options2(self, mock_arg, mock_help):
 
         """Function:  test_l_opt_req_options2
 
@@ -228,16 +346,14 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_arg.return_value = self.args_array2
+        mock_arg.return_value = self.args2
         mock_help.return_value = True
-        mock_inst.return_value = self.cmd_line
 
         self.assertFalse(mysql_binlog.main())
 
-    @mock.patch("mysql_binlog.gen_libs.get_inst")
     @mock.patch("mysql_binlog.gen_libs.help_func")
-    @mock.patch("mysql_binlog.arg_parser.arg_parse2")
-    def test_l_opt_req_options(self, mock_arg, mock_help, mock_inst):
+    @mock.patch("mysql_binlog.gen_class.ArgParser")
+    def test_l_opt_req_options(self, mock_arg, mock_help):
 
         """Function:  test_l_opt_req_options
 
@@ -247,16 +363,14 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_arg.return_value = self.args_array
+        mock_arg.return_value = self.args
         mock_help.return_value = True
-        mock_inst.return_value = self.cmd_line
 
         self.assertFalse(mysql_binlog.main())
 
-    @mock.patch("mysql_binlog.gen_libs.get_inst")
     @mock.patch("mysql_binlog.gen_libs.help_func")
-    @mock.patch("mysql_binlog.arg_parser.arg_parse2")
-    def test_help_true(self, mock_arg, mock_help, mock_inst):
+    @mock.patch("mysql_binlog.gen_class.ArgParser")
+    def test_help_true(self, mock_arg, mock_help):
 
         """Function:  test_help_true
 
@@ -266,17 +380,14 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_arg.return_value = self.args_array
+        mock_arg.return_value = self.args
         mock_help.return_value = True
-        mock_inst.return_value = self.cmd_line
 
         self.assertFalse(mysql_binlog.main())
 
-    @mock.patch("mysql_binlog.gen_libs.get_inst")
-    @mock.patch("mysql_binlog.arg_parser.arg_require")
     @mock.patch("mysql_binlog.gen_libs.help_func")
-    @mock.patch("mysql_binlog.arg_parser.arg_parse2")
-    def test_help_false(self, mock_arg, mock_help, mock_req, mock_inst):
+    @mock.patch("mysql_binlog.gen_class.ArgParser")
+    def test_help_false(self, mock_arg, mock_help):
 
         """Function:  test_help_false
 
@@ -286,41 +397,16 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_arg.return_value = self.args_array
+        self.args.opt_req2 = False
+
+        mock_arg.return_value = self.args
         mock_help.return_value = False
-        mock_req.return_value = True
-        mock_inst.return_value = self.cmd_line
 
         self.assertFalse(mysql_binlog.main())
 
-    @mock.patch("mysql_binlog.gen_libs.get_inst")
-    @mock.patch("mysql_binlog.arg_parser.arg_require")
     @mock.patch("mysql_binlog.gen_libs.help_func")
-    @mock.patch("mysql_binlog.arg_parser.arg_parse2")
-    def test_arg_req_true(self, mock_arg, mock_help, mock_req, mock_inst):
-
-        """Function:  test_arg_req_true
-
-        Description:  Test arg_require if returns true.
-
-        Arguments:
-
-        """
-
-        mock_arg.return_value = self.args_array
-        mock_help.return_value = False
-        mock_req.return_value = True
-        mock_inst.return_value = self.cmd_line
-
-        self.assertFalse(mysql_binlog.main())
-
-    @mock.patch("mysql_binlog.gen_libs.get_inst")
-    @mock.patch("mysql_binlog.arg_parser.arg_noreq_xor")
-    @mock.patch("mysql_binlog.arg_parser.arg_require")
-    @mock.patch("mysql_binlog.gen_libs.help_func")
-    @mock.patch("mysql_binlog.arg_parser.arg_parse2")
-    def test_arg_req_false(self, mock_arg, mock_help, mock_req, mock_xor,
-                           mock_inst):
+    @mock.patch("mysql_binlog.gen_class.ArgParser")
+    def test_arg_req_false(self, mock_arg, mock_help):
 
         """Function:  test_arg_req_false
 
@@ -330,18 +416,35 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_arg.return_value = self.args_array
+        self.args.opt_req2 = False
+
+        mock_arg.return_value = self.args
         mock_help.return_value = False
-        mock_req.return_value = False
-        mock_xor.return_value = False
-        mock_inst.return_value = self.cmd_line
 
         self.assertFalse(mysql_binlog.main())
 
-    @mock.patch("mysql_binlog.gen_libs.get_inst")
     @mock.patch("mysql_binlog.gen_libs.help_func")
-    @mock.patch("mysql_binlog.arg_parser")
-    def test_arg_noreq_xor_false(self, mock_arg, mock_help, mock_inst):
+    @mock.patch("mysql_binlog.gen_class.ArgParser")
+    def test_arg_req_true(self, mock_arg, mock_help):
+
+        """Function:  test_arg_req_true
+
+        Description:  Test arg_require if returns true.
+
+        Arguments:
+
+        """
+
+        self.args.xor_noreq2 = False
+
+        mock_arg.return_value = self.args
+        mock_help.return_value = False
+
+        self.assertFalse(mysql_binlog.main())
+
+    @mock.patch("mysql_binlog.gen_libs.help_func")
+    @mock.patch("mysql_binlog.gen_class.ArgParser")
+    def test_arg_noreq_xor_false(self, mock_arg, mock_help):
 
         """Function:  test_arg_noreq_xor_false
 
@@ -351,18 +454,16 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_arg.arg_parse2.return_value = self.args_array
+        self.args.xor_noreq2 = False
+
+        mock_arg.return_value = self.args
         mock_help.return_value = False
-        mock_arg.arg_require.return_value = False
-        mock_arg.arg_noreq_xor.return_value = False
-        mock_inst.return_value = self.cmd_line
 
         self.assertFalse(mysql_binlog.main())
 
-    @mock.patch("mysql_binlog.gen_libs.get_inst")
     @mock.patch("mysql_binlog.gen_libs.help_func")
-    @mock.patch("mysql_binlog.arg_parser")
-    def test_arg_noreq_xor_true(self, mock_arg, mock_help, mock_inst):
+    @mock.patch("mysql_binlog.gen_class.ArgParser")
+    def test_arg_noreq_xor_true(self, mock_arg, mock_help):
 
         """Function:  test_arg_noreq_xor_true
 
@@ -372,19 +473,16 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_arg.arg_parse2.return_value = self.args_array
+        self.args.opt_con_req2 = False
+
+        mock_arg.return_value = self.args
         mock_help.return_value = False
-        mock_arg.arg_require.return_value = False
-        mock_arg.arg_noreq_xor.return_value = True
-        mock_arg.arg_cond_req.return_value = False
-        mock_inst.return_value = self.cmd_line
 
         self.assertFalse(mysql_binlog.main())
 
-    @mock.patch("mysql_binlog.gen_libs.get_inst")
     @mock.patch("mysql_binlog.gen_libs.help_func")
-    @mock.patch("mysql_binlog.arg_parser")
-    def test_arg_cond_req_false(self, mock_arg, mock_help, mock_inst):
+    @mock.patch("mysql_binlog.gen_class.ArgParser")
+    def test_arg_cond_req_false(self, mock_arg, mock_help):
 
         """Function:  test_arg_cond_req_false
 
@@ -394,19 +492,16 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_arg.arg_parse2.return_value = self.args_array
+        self.args.opt_con_req2 = False
+
+        mock_arg.return_value = self.args
         mock_help.return_value = False
-        mock_arg.arg_require.return_value = False
-        mock_arg.arg_noreq_xor.return_value = True
-        mock_arg.arg_cond_req.return_value = False
-        mock_inst.return_value = self.cmd_line
 
         self.assertFalse(mysql_binlog.main())
 
-    @mock.patch("mysql_binlog.gen_libs.get_inst")
     @mock.patch("mysql_binlog.gen_libs.help_func")
-    @mock.patch("mysql_binlog.arg_parser")
-    def test_arg_cond_req_true(self, mock_arg, mock_help, mock_inst):
+    @mock.patch("mysql_binlog.gen_class.ArgParser")
+    def test_arg_cond_req_true(self, mock_arg, mock_help):
 
         """Function:  test_arg_cond_req_true
 
@@ -416,46 +511,16 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_arg.arg_parse2.return_value = self.args_array
+        self.args.dir_perms_chk2 = False
+
+        mock_arg.return_value = self.args
         mock_help.return_value = False
-        mock_arg.arg_require.return_value = False
-        mock_arg.arg_noreq_xor.return_value = True
-        mock_arg.arg_cond_req.return_value = True
-        mock_arg.arg_dir_chk_crt.return_value = True
-        mock_inst.return_value = self.cmd_line
 
         self.assertFalse(mysql_binlog.main())
 
-    @mock.patch("mysql_binlog.gen_libs.get_inst")
     @mock.patch("mysql_binlog.gen_libs.help_func")
-    @mock.patch("mysql_binlog.arg_parser")
-    def test_arg_dir_chk_crt_true(self, mock_arg, mock_help, mock_inst):
-
-        """Function:  test_arg_dir_chk_crt_true
-
-        Description:  Test arg_dir_chk_crt if returns true.
-
-        Arguments:
-
-        """
-
-        mock_arg.arg_parse2.return_value = self.args_array
-        mock_help.return_value = False
-        mock_arg.arg_require.return_value = False
-        mock_arg.arg_noreq_xor.return_value = True
-        mock_arg.arg_cond_req.return_value = True
-        mock_arg.arg_dir_chk_crt.return_value = True
-        mock_inst.return_value = self.cmd_line
-
-        self.assertFalse(mysql_binlog.main())
-
-    @mock.patch("mysql_binlog.gen_class.ProgramLock")
-    @mock.patch("mysql_binlog.gen_libs.get_inst")
-    @mock.patch("mysql_binlog.run_program")
-    @mock.patch("mysql_binlog.gen_libs.help_func")
-    @mock.patch("mysql_binlog.arg_parser")
-    def test_arg_dir_chk_crt_false(self, mock_arg, mock_help, mock_run,
-                                   mock_inst, mock_lock):
+    @mock.patch("mysql_binlog.gen_class.ArgParser")
+    def test_arg_dir_chk_crt_false(self, mock_arg, mock_help):
 
         """Function:  test_arg_dir_chk_crt_false
 
@@ -465,25 +530,40 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_arg.arg_parse2.return_value = self.args_array
+        self.args.dir_perms_chk2 = False
+
+        mock_arg.return_value = self.args
         mock_help.return_value = False
-        mock_arg.arg_require.return_value = False
-        mock_arg.arg_noreq_xor.return_value = True
-        mock_arg.arg_cond_req.return_value = True
-        mock_arg.arg_dir_chk_crt.return_value = False
+
+        self.assertFalse(mysql_binlog.main())
+
+    @mock.patch("mysql_binlog.gen_class.ProgramLock")
+    @mock.patch("mysql_binlog.run_program")
+    @mock.patch("mysql_binlog.gen_libs.help_func")
+    @mock.patch("mysql_binlog.gen_class.ArgParser")
+    def test_arg_dir_chk_crt_true(self, mock_arg, mock_help, mock_run,
+                                  mock_lock):
+
+        """Function:  test_arg_dir_chk_crt_true
+
+        Description:  Test arg_dir_chk_crt if returns true.
+
+        Arguments:
+
+        """
+
+        mock_arg.return_value = self.args
+        mock_help.return_value = False
         mock_run.return_value = True
-        mock_inst.return_value = self.cmd_line
         mock_lock.return_value = self.proglock
 
         self.assertFalse(mysql_binlog.main())
 
     @mock.patch("mysql_binlog.gen_class.ProgramLock")
-    @mock.patch("mysql_binlog.gen_libs.get_inst")
     @mock.patch("mysql_binlog.run_program")
     @mock.patch("mysql_binlog.gen_libs.help_func")
-    @mock.patch("mysql_binlog.arg_parser")
-    def test_run_program(self, mock_arg, mock_help, mock_run, mock_inst,
-                         mock_lock):
+    @mock.patch("mysql_binlog.gen_class.ArgParser")
+    def test_run_program(self, mock_arg, mock_help, mock_run, mock_lock):
 
         """Function:  test_run_program
 
@@ -493,25 +573,18 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_arg.arg_parse2.return_value = self.args_array
+        mock_arg.return_value = self.args
         mock_help.return_value = False
-        mock_arg.arg_require.return_value = False
-        mock_arg.arg_noreq_xor.return_value = True
-        mock_arg.arg_cond_req.return_value = True
-        mock_arg.arg_dir_chk_crt.return_value = False
         mock_run.return_value = True
-        mock_inst.return_value = self.cmd_line
         mock_lock.return_value = self.proglock
 
         self.assertFalse(mysql_binlog.main())
 
     @mock.patch("mysql_binlog.gen_class.ProgramLock")
-    @mock.patch("mysql_binlog.gen_libs.get_inst")
     @mock.patch("mysql_binlog.run_program")
     @mock.patch("mysql_binlog.gen_libs.help_func")
-    @mock.patch("mysql_binlog.arg_parser")
-    def test_programlock_id(self, mock_arg, mock_help, mock_run, mock_inst,
-                            mock_lock):
+    @mock.patch("mysql_binlog.gen_class.ArgParser")
+    def test_programlock_id(self, mock_arg, mock_help, mock_run, mock_lock):
 
         """Function:  test_programlock_id
 
@@ -521,25 +594,18 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_arg.arg_parse2.return_value = self.args_array
+        mock_arg.return_value = self.args
         mock_help.return_value = False
-        mock_arg.arg_require.return_value = False
-        mock_arg.arg_noreq_xor.return_value = True
-        mock_arg.arg_cond_req.return_value = True
-        mock_arg.arg_dir_chk_crt.return_value = False
         mock_run.return_value = True
-        mock_inst.return_value = self.cmd_line
         mock_lock.return_value = self.proglock
 
         self.assertFalse(mysql_binlog.main())
 
     @mock.patch("mysql_binlog.gen_class.ProgramLock")
-    @mock.patch("mysql_binlog.gen_libs.get_inst")
     @mock.patch("mysql_binlog.run_program")
     @mock.patch("mysql_binlog.gen_libs.help_func")
-    @mock.patch("mysql_binlog.arg_parser")
-    def test_programlock_fail(self, mock_arg, mock_help, mock_run, mock_inst,
-                              mock_lock):
+    @mock.patch("mysql_binlog.gen_class.ArgParser")
+    def test_programlock_fail(self, mock_arg, mock_help, mock_run, mock_lock):
 
         """Function:  test_programlock_fail
 
@@ -549,14 +615,9 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_arg.arg_parse2.return_value = self.args_array
+        mock_arg.return_value = self.args
         mock_help.return_value = False
-        mock_arg.arg_require.return_value = False
-        mock_arg.arg_noreq_xor.return_value = True
-        mock_arg.arg_cond_req.return_value = True
-        mock_arg.arg_dir_chk_crt.return_value = False
         mock_run.return_value = True
-        mock_inst.return_value = self.cmd_line
         mock_lock.side_effect = mysql_binlog.gen_class.SingleInstanceException
 
         with gen_libs.no_std_out():

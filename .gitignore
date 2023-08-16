@@ -7,3 +7,4 @@ config/*.py
 config/*.cfg
 lib
 mysql_lib
+.scannerwork
