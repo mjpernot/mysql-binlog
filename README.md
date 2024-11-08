@@ -143,7 +143,7 @@ Install the project using the procedures in the Installation section.
 
 ```
 cd {Python_Project}/mysql-binlog
-test/unit/mysql_binlog/unit_test_run.sh
+test/unit/mysql_binlog/unit_test_run3.sh
 ```
 
 ### Code Coverage:
