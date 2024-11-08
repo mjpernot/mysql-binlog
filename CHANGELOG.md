@@ -12,6 +12,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Updated python-lib to v3.0.7
 - Updated mysql-lib to v5.3.8
 
+### Deprecated
+- Support for Python 2.7
+
 
 ## [3.2.3] - 2024-09-27
 - Updated simplejson==3.13.2 for Python 3
