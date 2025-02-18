@@ -64,7 +64,7 @@
             host = "HOST_IP"
             name = "HOST_NAME"
             sid = SERVER_ID
-            extra_def_file = "PYTHON_PROJECT/config/mysql.cfg"
+            extra_def_file = "PATH/config/mysql.cfg"
             serv_os = "Linux"
             port = 3306
             cfg_file = "MYSQL_DIRECTORY/mysqld.cnf"
@@ -105,8 +105,6 @@
 """
 
 # Libraries and Global Variables
-from __future__ import print_function
-from __future__ import absolute_import
 
 # Standard
 import sys
@@ -123,10 +121,10 @@ try:
     from . import version
 
 except (ValueError, ImportError) as err:
-    import lib.gen_libs as gen_libs
-    import lib.gen_class as gen_class
-    import mysql_lib.mysql_libs as mysql_libs
-    import mysql_lib.mysql_class as mysql_class
+    import lib.gen_libs as gen_libs                     # pylint:disable=R0402
+    import lib.gen_class as gen_class                   # pylint:disable=R0402
+    import mysql_lib.mysql_libs as mysql_libs           # pylint:disable=R0402
+    import mysql_lib.mysql_class as mysql_class         # pylint:disable=R0402
     import version
 
 __version__ = version.__version__
@@ -183,7 +181,7 @@ def flush_log_bkp(args, server):
         cp_zip_file(args, cur_log)
 
     else:
-        print("Warning: Flush of binary log: %s did not complete." % (cur_log))
+        print(f"Warning: Flush of binary log: {cur_log} did not complete.")
 
 
 def fetch_bkp_logs(dir_path):
@@ -277,7 +275,7 @@ def missing_log(args, server):
         print("Missing files:")
 
         for item in miss_files:
-            print("\t{0}".format(item))
+            print(f"\t{item}")
 
 
 def bkp_log_miss(args, server):
@@ -375,7 +373,7 @@ def purge_log_name(args, server):
         mysql_libs.purge_bin_logs(server, "to", args.get_val("-R"))
 
     else:
-        print("Error:  {0} log is not present.".format(args.get_val("-R")))
+        print(f'Error:  {args.get_val("-R")} log is not present.')
 
 
 def run_program(args, func_dict, ord_prec_list):
@@ -398,8 +396,8 @@ def run_program(args, func_dict, ord_prec_list):
     server.connect(silent=True)
 
     if server.conn_msg:
-        print("run_program:  Error encountered on server(%s):  %s" %
-              (server.name, server.conn_msg))
+        print(f"run_program:  Error encountered on server {server.name}:"
+              f" {server.conn_msg}")
 
     else:
         # Execute functions based on order of precedence.
@@ -474,8 +472,8 @@ def main():
             del prog_lock
 
         except gen_class.SingleInstanceException:
-            print("WARNING:  lock in place for mysql_binlog with id of: %s"
-                  % (args.get_val("-y", def_val="")))
+            print(f'WARNING:  lock in place for mysql_binlog with id of:'
+                  f' {args.get_val("-y", def_val="")}')
 
 
 if __name__ == "__main__":
